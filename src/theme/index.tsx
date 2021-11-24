@@ -7,6 +7,7 @@ import styled, {
   ThemeProvider as StyledComponentsThemeProvider,
 } from 'styled-components/macro'
 
+import BgDark from '../assets/images/bg-dark.png'
 import { useIsDarkMode } from '../state/user/hooks'
 import { Colors } from './styled'
 
@@ -208,6 +209,14 @@ export const ThemedGlobalStyle = createGlobalStyle`
 html {
   color: ${({ theme }) => theme.text1};
   background-color: ${({ theme }) => theme.bg1} !important;
+}
+
+body {
+  min-height: 100vh;
+  background-position: center center, 0px -30vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url(${BgDark}), radial-gradient(50% 50% at 50% 50%, rgba(0, 113, 188, 0.1) 0%, rgba(7, 6, 24, 0) 100%);
 }
 
 a {
