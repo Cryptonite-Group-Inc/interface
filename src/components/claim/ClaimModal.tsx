@@ -101,12 +101,12 @@ export default function ClaimModal() {
             <CardSection gap="md">
               <RowBetween>
                 <TYPE.white fontWeight={500}>
-                  <Trans>Claim UNI</Trans>
+                  <Trans>Claim MISHKA</Trans>
                 </TYPE.white>
                 <CloseIcon onClick={toggleClaimModal} style={{ zIndex: 99 }} color="white" />
               </RowBetween>
               <TYPE.white fontWeight={700} fontSize={36}>
-                <Trans>{unclaimedAmount?.toFixed(0, { groupSeparator: ',' } ?? '-')} UNI</Trans>
+                <Trans>{unclaimedAmount?.toFixed(0, { groupSeparator: ',' } ?? '-')} MISHKA</Trans>
               </TYPE.white>
             </CardSection>
             <Break />
@@ -115,7 +115,7 @@ export default function ClaimModal() {
                 <RowBetween>
                   <TYPE.subHeader color="white">SOCKS</TYPE.subHeader>
                   <TYPE.subHeader color="white">
-                    <Trans>{SOCKS_AMOUNT} UNI</Trans>
+                    <Trans>{SOCKS_AMOUNT} MISHKA</Trans>
                   </TYPE.subHeader>
                 </RowBetween>
               )}
@@ -131,7 +131,7 @@ export default function ClaimModal() {
                         {unclaimedAmount
                           .subtract(CurrencyAmount.fromRawAmount(unclaimedAmount.currency, nonLPAmount))
                           .toFixed(0, { groupSeparator: ',' })}{' '}
-                        UNI
+                        MISHKA
                       </Trans>
                     </TYPE.subHeader>
                   </RowBetween>
@@ -142,7 +142,7 @@ export default function ClaimModal() {
                     <Trans>User</Trans>
                   </TYPE.subHeader>
                   <TYPE.subHeader color="white">
-                    <Trans>{USER_AMOUNT} UNI</Trans>
+                    <Trans>{USER_AMOUNT} MISHKA</Trans>
                   </TYPE.subHeader>
                 </RowBetween>
               )}
@@ -151,10 +151,10 @@ export default function ClaimModal() {
           <AutoColumn gap="md" style={{ padding: '1rem', paddingTop: '0' }} justify="center">
             <TYPE.subHeader fontWeight={500}>
               <Trans>
-                As a member of the Uniswap community you may claim UNI to be used for voting and governance.
+                As a member of the Mishka community you may claim MISHKA to be used for voting and governance.
                 <br />
                 <br />
-                <ExternalLink href="https://uniswap.org/blog/uni">Read more about UNI</ExternalLink>
+                <ExternalLink href="https://uniswap.org/blog/uni">Read more about MISHKA</ExternalLink>
               </Trans>
             </TYPE.subHeader>
             <ButtonPrimary
@@ -165,7 +165,7 @@ export default function ClaimModal() {
               mt="1rem"
               onClick={onClaim}
             >
-              <Trans>Claim UNI</Trans>
+              <Trans>Claim MISHKA</Trans>
             </ButtonPrimary>
           </AutoColumn>
         </ContentWrapper>
@@ -182,7 +182,7 @@ export default function ClaimModal() {
             {!claimConfirmed ? (
               <CustomLightSpinner src={Circle} alt="loader" size={'90px'} />
             ) : (
-              <UniTokenAnimated width="72px" src={tokenLogo} alt="UNI" />
+              <UniTokenAnimated width="72px" src={tokenLogo} alt="MISHKA" />
             )}
           </ConfirmedIcon>
           <AutoColumn gap="100px" justify={'center'}>
@@ -192,7 +192,7 @@ export default function ClaimModal() {
               </TYPE.largeHeader>
               {!claimConfirmed && (
                 <Text fontSize={36} color={'#ff007a'} fontWeight={800}>
-                  <Trans>{unclaimedAmount?.toFixed(0, { groupSeparator: ',' } ?? '-')} UNI</Trans>
+                  <Trans>{unclaimedAmount?.toFixed(0, { groupSeparator: ',' } ?? '-')} MISHKA</Trans>
                 </Text>
               )}
             </AutoColumn>
