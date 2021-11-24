@@ -4,10 +4,10 @@ import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { AutoColumn } from 'components/Column'
 import { PrivacyPolicy } from 'components/PrivacyPolicy'
-import Row, { AutoRow, RowBetween } from 'components/Row'
+import Row from 'components/Row'
 import { useWalletConnectMonitoringEventCallback } from 'hooks/useMonitoringEventCallback'
 import { useEffect, useState } from 'react'
-import { ArrowLeft, ArrowRight, Info } from 'react-feather'
+import { ArrowLeft } from 'react-feather'
 import ReactGA from 'react-ga'
 import styled from 'styled-components/macro'
 
@@ -19,10 +19,10 @@ import { SUPPORTED_WALLETS } from '../../constants/wallet'
 import usePrevious from '../../hooks/usePrevious'
 import { useModalOpen, useWalletModalToggle } from '../../state/application/hooks'
 import { ApplicationModal } from '../../state/application/reducer'
-import { ExternalLink, TYPE } from '../../theme'
+import { TYPE } from '../../theme'
 import { isMobile } from '../../utils/userAgent'
 import AccountDetails from '../AccountDetails'
-import Card, { LightCard } from '../Card'
+import Card from '../Card'
 import Modal from '../Modal'
 import Option from './Option'
 import PendingView from './PendingView'
@@ -390,7 +390,7 @@ export default function WalletModal({
 
         <ContentWrapper>
           <AutoColumn gap="16px">
-            <LightCard>
+            {/* <LightCard>
               <AutoRow style={{ flexWrap: 'nowrap' }}>
                 <TYPE.black fontSize={14}>
                   <Trans>
@@ -401,8 +401,8 @@ export default function WalletModal({
                   </Trans>
                 </TYPE.black>
               </AutoRow>
-            </LightCard>
-            <LinkCard padding=".5rem" $borderRadius=".75rem" onClick={() => setWalletView(WALLET_VIEWS.LEGAL)}>
+            </LightCard> */}
+            {/* <LinkCard padding=".5rem" $borderRadius=".75rem" onClick={() => setWalletView(WALLET_VIEWS.LEGAL)}>
               <RowBetween>
                 <AutoRow gap="4px">
                   <Info size={20} />
@@ -412,7 +412,7 @@ export default function WalletModal({
                 </AutoRow>
                 <ArrowRight size={16} />
               </RowBetween>
-            </LinkCard>
+            </LinkCard> */}
             {walletView === WALLET_VIEWS.PENDING ? (
               <PendingView
                 connector={pendingWallet}
