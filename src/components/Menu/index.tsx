@@ -7,7 +7,7 @@ import { useActiveLocale } from 'hooks/useActiveLocale'
 import { useLocationLinkProps } from 'hooks/useLocationLinkProps'
 import React, { useEffect, useRef, useState } from 'react'
 import {
-  BookOpen,
+  // BookOpen,
   Check,
   ChevronLeft,
   Coffee,
@@ -16,11 +16,11 @@ import {
   HelpCircle,
   Info,
   MessageCircle,
-  Moon,
-  Sun,
+  // Moon,
+  // Sun,
 } from 'react-feather'
 import { Link } from 'react-router-dom'
-import { useDarkModeManager } from 'state/user/hooks'
+// import { useDarkModeManager } from 'state/user/hooks'
 import styled, { css } from 'styled-components/macro'
 
 import { ReactComponent as MenuIcon } from '../../assets/images/menu.svg'
@@ -115,7 +115,7 @@ const MenuFlyout = styled.span<{ flyoutAlignment?: FlyoutAlignment }>`
   `};
 `
 
-const MenuItem = styled(ExternalLink)`
+const MenuItem = styled(ExternalLink)<{ disabled?: boolean }>`
   display: flex;
   flex: 1;
   flex-direction: row;
@@ -123,6 +123,8 @@ const MenuItem = styled(ExternalLink)`
   padding: 0.5rem 0.5rem;
   justify-content: space-between;
   color: ${({ theme }) => theme.text2};
+  opacity: ${({ disabled }) => (!disabled ? '' : 0.3)};
+  pointer-events: ${({ disabled }) => (!disabled ? '' : 'none')};
   :hover {
     color: ${({ theme }) => theme.text1};
     cursor: pointer;
@@ -177,6 +179,10 @@ const ToggleMenuItem = styled.button`
     cursor: pointer;
     text-decoration: none;
   }
+  :disabled {
+    opacity: 0.3;
+    pointer-events: none;
+  }
 `
 
 function LanguageMenuItem({ locale, active, key }: { locale: SupportedLocale; active: boolean; key: string }) {
@@ -218,7 +224,7 @@ export default function Menu() {
   const openClaimModal = useToggleModal(ApplicationModal.ADDRESS_CLAIM)
   const showUNIClaimOption = Boolean(!!account && !!chainId && !L2_CHAIN_IDS.includes(chainId))
 
-  const [darkMode, toggleDarkMode] = useDarkModeManager()
+  // const [darkMode, toggleDarkMode] = useDarkModeManager()
 
   const [menu, setMenu] = useState<'main' | 'lang'>('main')
 
@@ -243,37 +249,37 @@ export default function Menu() {
               default:
                 return (
                   <MenuFlyout>
-                    <MenuItem href="https://uniswap.org/">
+                    <MenuItem href="">
                       <div>
                         <Trans>About</Trans>
                       </div>
                       <Info opacity={0.6} size={16} />
                     </MenuItem>
-                    <MenuItem href="https://help.uniswap.org/">
+                    <MenuItem href="https://help.uniswap.org/" disabled>
                       <div>
                         <Trans>Help Center</Trans>
                       </div>
                       <HelpCircle opacity={0.6} size={16} />
                     </MenuItem>
-                    <MenuItem href="https://uniswap.canny.io/feature-requests">
+                    <MenuItem href="https://uniswap.canny.io/feature-requests" disabled>
                       <div>
                         <Trans>Request Features</Trans>
                       </div>
                       <Coffee opacity={0.6} size={16} />
                     </MenuItem>
-                    <MenuItem href="https://discord.gg/FCfyBSbCU5">
+                    <MenuItem href="https://t.me/mishkatoken">
                       <div>
-                        <Trans>Discord</Trans>
+                        <Trans>Telegram</Trans>
                       </div>
                       <MessageCircle opacity={0.6} size={16} />
                     </MenuItem>
-                    <ToggleMenuItem onClick={() => setMenu('lang')}>
+                    <ToggleMenuItem onClick={() => setMenu('lang')} disabled>
                       <div>
                         <Trans>Language</Trans>
                       </div>
                       <Globe opacity={0.6} size={16} />
                     </ToggleMenuItem>
-                    <ToggleMenuItem onClick={() => toggleDarkMode()}>
+                    {/* <ToggleMenuItem onClick={() => toggleDarkMode()}>
                       <div>{darkMode ? <Trans>Light Theme</Trans> : <Trans>Dark Theme</Trans>}</div>
                       {darkMode ? <Moon opacity={0.6} size={16} /> : <Sun opacity={0.6} size={16} />}
                     </ToggleMenuItem>
@@ -282,7 +288,7 @@ export default function Menu() {
                         <Trans>Docs</Trans>
                       </div>
                       <BookOpen opacity={0.6} size={16} />
-                    </MenuItem>
+                    </MenuItem> */}
                     <ToggleMenuItem onClick={() => togglePrivacyPolicy()}>
                       <div>
                         <Trans>Legal & Privacy</Trans>
@@ -297,7 +303,7 @@ export default function Menu() {
                         $borderRadius="12px"
                         mt="0.5rem"
                       >
-                        <Trans>Claim UNI</Trans>
+                        <Trans>Buy MISHKA</Trans>
                       </UNIbutton>
                     )}
                   </MenuFlyout>
