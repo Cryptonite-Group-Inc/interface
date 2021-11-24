@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro'
 import useScrollPosition from '@react-hook/window-scroll'
-import { CHAIN_INFO, SupportedChainId } from 'constants/chains'
+// import { CHAIN_INFO, SupportedChainId } from 'constants/chains'
 import useTheme from 'hooks/useTheme'
 import { darken } from 'polished'
 import { useState } from 'react'
@@ -13,7 +13,7 @@ import { useDarkModeManager } from 'state/user/hooks'
 import { useETHBalances } from 'state/wallet/hooks'
 import styled from 'styled-components/macro'
 
-import { ReactComponent as Logo } from '../../assets/svg/logo.svg'
+// import { ReactComponent as Logo } from '../../assets/svg/logo.svg'
 import { useActiveWeb3React } from '../../hooks/web3'
 import { ExternalLink, TYPE } from '../../theme'
 import ClaimModal from '../claim/ClaimModal'
@@ -28,24 +28,38 @@ import UniBalanceContent from './UniBalanceContent'
 
 const HeaderFrame = styled.div<{ showBackground: boolean }>`
   display: grid;
-  grid-template-columns: 120px 1fr 120px;
-  align-items: center;
+  grid-template-columns: 1fr 120px;
+  -webkit-box-pack: justify;
   justify-content: space-between;
+  -webkit-box-align: center;
   align-items: center;
   flex-direction: row;
   width: 100%;
-  top: 0;
+  top: 0px;
   position: relative;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   padding: 1rem;
-  z-index: 21;
-  position: relative;
-  /* Background slide effect on scroll. */
-  background-image: ${({ theme }) => `linear-gradient(to bottom, transparent 50%, ${theme.bg0} 50% )}}`};
-  background-position: ${({ showBackground }) => (showBackground ? '0 -100%' : '0 0')};
-  background-size: 100% 200%;
-  box-shadow: 0px 0px 0px 1px ${({ theme, showBackground }) => (showBackground ? theme.bg2 : 'transparent;')};
-  transition: background-position 0.1s, box-shadow 0.1s;
-  background-blend-mode: hard-light;
+  z-index: 2;
+
+  // display: grid;
+  // grid-template-columns: 120px 1fr 120px;
+  // align-items: center;
+  // justify-content: space-between;
+  // align-items: center;
+  // flex-direction: row;
+  // width: 100%;
+  // top: 0;
+  // position: relative;
+  // padding: 1rem;
+  // z-index: 21;
+  // position: relative;
+  // /* Background slide effect on scroll. */
+  // background-image: ${({ theme }) => `linear-gradient(to bottom, transparent 50%, ${theme.bg0} 50% )}}`};
+  // background-position: ${({ showBackground }) => (showBackground ? '0 -100%' : '0 0')};
+  // background-size: 100% 200%;
+  // box-shadow: 0px 0px 0px 1px ${({ theme, showBackground }) => (showBackground ? theme.bg2 : 'transparent;')};
+  // transition: background-position 0.1s, box-shadow 0.1s;
+  // background-blend-mode: hard-light;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
     grid-template-columns: 48px 1fr 1fr;
@@ -88,35 +102,47 @@ const HeaderElement = styled.div`
 `
 
 const HeaderLinks = styled(Row)`
-  justify-self: center;
-  background-color: ${({ theme }) => theme.bg0};
-  width: fit-content;
-  padding: 4px;
-  border-radius: 16px;
-  display: grid;
-  grid-auto-flow: column;
-  grid-gap: 10px;
-  overflow: auto;
+  box-sizing: border-box;
+  margin: 0px;
+  margin-left: 12px;
+  min-width: 0px;
+  display: flex;
+  padding: 0px;
+  -webkit-box-align: center;
   align-items: center;
-  ${({ theme }) => theme.mediaWidth.upToLarge`
-    justify-self: start;  
-    `};
-  ${({ theme }) => theme.mediaWidth.upToMedium`
-    justify-self: center;
-  `};
-  ${({ theme }) => theme.mediaWidth.upToMedium`
-    flex-direction: row;
-    justify-content: space-between;
-    justify-self: center;
-    z-index: 99;
-    position: fixed;
-    bottom: 0; right: 50%;
-    transform: translate(50%,-50%);
-    margin: 0 auto;
-    background-color: ${({ theme }) => theme.bg0};
-    border: 1px solid ${({ theme }) => theme.bg2};
-    box-shadow: 0px 6px 10px rgb(0 0 0 / 2%);
-  `};
+  -webkit-box-pack: start;
+  justify-content: flex-start;
+  width: fit-content;
+
+  // justify-self: center;
+  // background-color: ${({ theme }) => theme.bg0};
+  // width: fit-content;
+  // padding: 4px;
+  // border-radius: 16px;
+  // display: grid;
+  // grid-auto-flow: column;
+  // grid-gap: 10px;
+  // overflow: auto;
+  // align-items: center;
+  // ${({ theme }) => theme.mediaWidth.upToLarge`
+  //   justify-self: start;  
+  //   `};
+  // ${({ theme }) => theme.mediaWidth.upToMedium`
+  //   justify-self: center;
+  // `};
+  // ${({ theme }) => theme.mediaWidth.upToMedium`
+  //   flex-direction: row;
+  //   justify-content: space-between;
+  //   justify-self: center;
+  //   z-index: 99;
+  //   position: fixed;
+  //   bottom: 0; right: 50%;
+  //   transform: translate(50%,-50%);
+  //   margin: 0 auto;
+  //   background-color: ${({ theme }) => theme.bg0};
+  //   border: 1px solid ${({ theme }) => theme.bg2};
+  //   box-shadow: 0px 6px 10px rgb(0 0 0 / 2%);
+  // `};
 `
 
 const AccountElement = styled.div<{ active: boolean }>`
@@ -202,11 +228,11 @@ const StyledNavLink = styled(NavLink).attrs({
   overflow: hidden;
   white-space: nowrap;
   &.${activeClassName} {
-    border-radius: 12px;
+    // border-radius: 12px;
     font-weight: 600;
     justify-content: center;
     color: ${({ theme }) => theme.text1};
-    background-color: ${({ theme }) => theme.bg2};
+    // background-color: ${({ theme }) => theme.bg2};
   }
 
   :hover,
@@ -261,23 +287,29 @@ export default function Header() {
 
   const scrollY = useScrollPosition()
 
-  const { infoLink } = CHAIN_INFO[chainId ? chainId : SupportedChainId.MAINNET]
+  // const { infoLink } = CHAIN_INFO[chainId ? chainId : SupportedChainId.MAINNET]
   return (
     <HeaderFrame showBackground={scrollY > 45}>
       <ClaimModal />
       <Modal isOpen={showUniBalanceModal} onDismiss={() => setShowUniBalanceModal(false)}>
         <UniBalanceContent setShowUniBalanceModal={setShowUniBalanceModal} />
       </Modal>
-      <Title href=".">
+      {/* <Title href=".">
         <UniIcon>
           <Logo fill={darkMode ? white : black} width="24px" height="100%" title="logo" />
         </UniIcon>
-      </Title>
+      </Title> */}
       <HeaderLinks>
+        <StyledNavLink id={`home-nav-link`} to={'/home'}>
+          <Trans>Home</Trans>
+        </StyledNavLink>
         <StyledNavLink id={`swap-nav-link`} to={'/swap'}>
           <Trans>Swap</Trans>
         </StyledNavLink>
-        <StyledNavLink
+        <StyledNavLink id={`claim-nav-link`} to={'/claim'}>
+          <Trans>Claim</Trans>
+        </StyledNavLink>
+        {/* <StyledNavLink
           id={`pool-nav-link`}
           to={'/pool'}
           isActive={(match, { pathname }) =>
@@ -294,11 +326,11 @@ export default function Header() {
           <StyledNavLink id={`vote-nav-link`} to={'/vote'}>
             <Trans>Vote</Trans>
           </StyledNavLink>
-        )}
-        <StyledExternalLink id={`charts-nav-link`} href={infoLink}>
+        )} */}
+        {/* <StyledExternalLink id={`charts-nav-link`} href={infoLink}>
           <Trans>Charts</Trans>
           <sup>↗</sup>
-        </StyledExternalLink>
+        </StyledExternalLink> */}
       </HeaderLinks>
 
       <HeaderControls>
@@ -312,10 +344,10 @@ export default function Header() {
                 <TYPE.white padding="0 2px">
                   {claimTxn && !claimTxn?.receipt ? (
                     <Dots>
-                      <Trans>Claiming UNI</Trans>
+                      <Trans>Claiming MISHKA</Trans>
                     </Dots>
                   ) : (
-                    <Trans>Claim UNI</Trans>
+                    <Trans>Claim MISHKA</Trans>
                   )}
                 </TYPE.white>
               </UNIAmount>
