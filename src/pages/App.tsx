@@ -6,14 +6,14 @@ import styled from 'styled-components/macro'
 
 import Logo from '../assets/images/logo.gif'
 import GoogleAnalyticsReporter from '../components/analytics/GoogleAnalyticsReporter'
-import AddressClaimModal from '../components/claim/AddressClaimModal'
+// import AddressClaimModal from '../components/claim/AddressClaimModal'
 import ErrorBoundary from '../components/ErrorBoundary'
 import Header from '../components/Header'
 import Polling from '../components/Header/Polling'
 import Popups from '../components/Popups'
 import Web3ReactManager from '../components/Web3ReactManager'
-import { useModalOpen, useToggleModal } from '../state/application/hooks'
-import { ApplicationModal } from '../state/application/reducer'
+// import { useModalOpen, useToggleModal } from '../state/application/hooks'
+// import { ApplicationModal } from '../state/application/reducer'
 import DarkModeQueryParamReader from '../theme/DarkModeQueryParamReader'
 // import AddLiquidity from './AddLiquidity'
 // import { RedirectDuplicateTokenIds } from './AddLiquidity/redirects'
@@ -28,8 +28,9 @@ import DarkModeQueryParamReader from '../theme/DarkModeQueryParamReader'
 // import PoolFinder from './PoolFinder'
 // import RemoveLiquidity from './RemoveLiquidity'
 // import RemoveLiquidityV3 from './RemoveLiquidity/V3'
+import Claim from './Claim'
 import Swap from './Swap'
-import { OpenClaimAddressModalAndRedirectToSwap, RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
+import { RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
 
 // const Vote = lazy(() => import('./Vote'))
 
@@ -74,11 +75,11 @@ const Marginer = styled.div`
   margin-top: 5rem;
 `
 
-function TopLevelModals() {
-  const open = useModalOpen(ApplicationModal.ADDRESS_CLAIM)
-  const toggle = useToggleModal(ApplicationModal.ADDRESS_CLAIM)
-  return <AddressClaimModal isOpen={open} onDismiss={toggle} />
-}
+// function TopLevelModals() {
+//   const open = useModalOpen(ApplicationModal.ADDRESS_CLAIM)
+//   const toggle = useToggleModal(ApplicationModal.ADDRESS_CLAIM)
+//   return <AddressClaimModal isOpen={open} onDismiss={toggle} />
+// }
 
 export default function App() {
   return (
@@ -97,14 +98,14 @@ export default function App() {
             </LogoWrapper>
             <Popups />
             <Polling />
-            <TopLevelModals />
+            {/* <TopLevelModals /> */}
             <Suspense fallback={<Loader />}>
               <Switch>
                 {/* <Route strict path="/vote" component={Vote} />
                 <Route exact strict path="/create-proposal">
                   <Redirect to="/vote/create-proposal" />
                 </Route> */}
-                <Route exact strict path="/claim" component={OpenClaimAddressModalAndRedirectToSwap} />
+                <Route exact strict path="/claim" component={Claim} />
                 {/* <Route exact strict path="/uni" component={Earn} />
                 <Route exact strict path="/uni/:currencyIdA/:currencyIdB" component={Manage} /> */}
 
