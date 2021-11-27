@@ -69,9 +69,14 @@ const FlyoutMenu = styled.div`
   & > *:not(:last-child) {
     margin-bottom: 12px;
   }
-  @media screen and (min-width: ${MEDIA_WIDTHS.upToSmall}px) {
-    top: 50px;
-  }
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    bottom: 60px;
+    top: unset;
+  `};
+
+  // @media screen and (min-width: ${MEDIA_WIDTHS.upToSmall}px) {
+  //   top: 50px;
+  // }
 `
 const FlyoutRow = styled.div<{ active: boolean }>`
   align-items: center;
