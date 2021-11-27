@@ -272,6 +272,9 @@ export function queryParametersToSwapState(parsedQs: ParsedQs): SwapState {
   if (inputCurrency === '' && outputCurrency === '') {
     // default to ETH input
     inputCurrency = 'ETH'
+
+    // default to MISHKA output
+    outputCurrency = 'MISHKA'
   } else if (inputCurrency === outputCurrency) {
     // clear output if identical
     outputCurrency = ''

@@ -5,7 +5,7 @@ import { CHAIN_INFO, L2_CHAIN_IDS, SupportedChainId, SupportedL2ChainId } from '
 import { useMemo } from 'react'
 
 import { createTokenFilterFunction } from '../components/SearchModal/filtering'
-import { ExtendedEther, WETH9_EXTENDED } from '../constants/tokens'
+import { ExtendedEther, MISHKA, WETH9_EXTENDED } from '../constants/tokens'
 import { useAllLists, useCombinedActiveList, useInactiveListUrls } from '../state/lists/hooks'
 import { WrappedTokenInfo } from '../state/lists/wrappedTokenInfo'
 import { NEVER_RELOAD, useSingleCallResult } from '../state/multicall/hooks'
@@ -228,6 +228,7 @@ export function useToken(tokenAddress?: string | null): Token | undefined | null
 export function useCurrency(currencyId: string | null | undefined): Currency | null | undefined {
   const { chainId } = useActiveWeb3React()
   const isETH = currencyId?.toUpperCase() === 'ETH'
+  const isMISHKA = currencyId?.toUpperCase() === 'MISHKA'
   const token = useToken(isETH ? undefined : currencyId)
   const extendedEther = useMemo(
     () =>
@@ -238,7 +239,9 @@ export function useCurrency(currencyId: string | null | undefined): Currency | n
     [chainId]
   )
   const weth = chainId ? WETH9_EXTENDED[chainId] : undefined
+  const mishka = chainId ? MISHKA : undefined
   if (currencyId === null || currencyId === undefined) return currencyId
   if (weth?.address?.toUpperCase() === currencyId?.toUpperCase()) return weth
+  if (isMISHKA) return mishka
   return isETH ? extendedEther : token
 }

@@ -4,6 +4,7 @@ import React, { useMemo } from 'react'
 import styled from 'styled-components/macro'
 
 import EthereumLogo from '../../assets/images/ethereum-logo.png'
+import MishkaLogo from '../../assets/images/token-logo.png'
 import useHttpLocations from '../../hooks/useHttpLocations'
 import { WrappedTokenInfo } from '../../state/lists/wrappedTokenInfo'
 import Logo from '../Logo'
@@ -34,7 +35,7 @@ export const getTokenLogoURL = (
   }
 }
 
-const StyledEthereumLogo = styled.img<{ size: string }>`
+const StyledCustomLogo = styled.img<{ size: string }>`
   width: ${({ size }) => size};
   height: ${({ size }) => size};
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.075);
@@ -79,7 +80,11 @@ export default function CurrencyLogo({
   }, [currency, uriLocations])
 
   if (currency?.isNative) {
-    return <StyledEthereumLogo src={EthereumLogo} alt="ethereum logo" size={size} style={style} {...rest} />
+    return <StyledCustomLogo src={EthereumLogo} alt="ethereum logo" size={size} style={style} {...rest} />
+  }
+
+  if (currency?.symbol === 'MISHKA') {
+    return <StyledCustomLogo src={MishkaLogo} alt="mishka logo" size={size} style={style} {...rest} />
   }
 
   return <StyledLogo size={size} srcs={srcs} alt={`${currency?.symbol ?? 'token'} logo`} style={style} {...rest} />

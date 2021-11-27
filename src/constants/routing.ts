@@ -12,6 +12,7 @@ import {
   FEI,
   FRAX,
   FXS,
+  MISHKA,
   renBTC,
   TRIBE,
   USDC,
@@ -78,6 +79,7 @@ export const COMMON_BASES: ChainCurrencyList = {
   [SupportedChainId.MAINNET]: [
     ExtendedEther.onChain(SupportedChainId.MAINNET),
     DAI,
+    MISHKA,
     USDC,
     USDT,
     WBTC,
