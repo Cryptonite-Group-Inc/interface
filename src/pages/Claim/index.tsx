@@ -1,12 +1,10 @@
 import { isAddress } from '@ethersproject/address'
 import { Trans } from '@lingui/macro'
-import { CurrencyAmount, Token } from '@uniswap/sdk-core'
-import JSBI from 'jsbi'
-import { useEffect, useState } from 'react'
+import { Currency, CurrencyAmount } from '@uniswap/sdk-core'
+import { useState } from 'react'
 import { Text } from 'rebass'
 import styled from 'styled-components/macro'
 
-import { getTokenBalances } from '../../api'
 import Circle from '../../assets/images/blue-loader.svg'
 import tokenLogo from '../../assets/images/token-logo.png'
 import { ButtonPrimary } from '../../components/Button'
@@ -15,10 +13,11 @@ import Confetti from '../../components/Confetti'
 import { Break, CardSection, DataCard } from '../../components/earn/styled'
 import { CardBGImage, CardNoise } from '../../components/earn/styled'
 import { RowBetween } from '../../components/Row'
+import { MISHKA } from '../../constants/tokens'
 import useENS from '../../hooks/useENS'
 import { useActiveWeb3React } from '../../hooks/web3'
-// import { useClaimCallback, useUserHasAvailableClaim, useUserUnclaimedAmount } from '../../state/claim/hooks'
 import { useIsTransactionPending } from '../../state/transactions/hooks'
+import { useCurrencyBalance } from '../../state/wallet/hooks'
 import { CustomLightSpinner, ExternalLink, TYPE, UniTokenAnimated } from '../../theme'
 import { shortenAddress } from '../../utils'
 import { ExplorerDataType, getExplorerLink } from '../../utils/getExplorerLink'
@@ -49,54 +48,23 @@ const ConfirmedIcon = styled(ColumnCenter)`
 
 export default function Claim() {
   const { account, chainId } = useActiveWeb3React()
-
   const { address: parsedAddress } = useENS(account)
 
-  const [unclaimedAmount, setUnclaimedAmount] = useState<CurrencyAmount<Token>>()
-  const [hasAvailableClaim, setHasAvailableClaim] = useState<boolean>(false)
+  const mishka = chainId ? MISHKA[chainId] : undefined
+  const unclaimedAmount: CurrencyAmount<Currency> | undefined = useCurrencyBalance(parsedAddress ?? undefined, mishka)
+  const hasAvailableClaim = !!unclaimedAmount
 
   // used for UI loading states
   const [attempting, setAttempting] = useState<boolean>(false)
-
-  // monitor the status of the claim from contracts and txns
-  // const { claimCallback } = useClaimCallback(parsedAddress)
-  // const unclaimedAmount: CurrencyAmount<Token> | undefined = useUserUnclaimedAmount(parsedAddress)
-
-  // check if the user has something available
-  // const hasAvailableClaim = useUserHasAvailableClaim(parsedAddress)
-
   const [hash, setHash] = useState<string | undefined>()
 
   // monitor the status of the claim from contracts and txns
   const claimPending = useIsTransactionPending(hash ?? '')
   const claimConfirmed = hash && !claimPending
 
-  // use the hash to monitor this txn
-
-  const getUnclaimedAmount = async () => {
-    const res = await getTokenBalances(parsedAddress)
-    if (!res.hasError) {
-      const token = res.payload?.records?.find((record: any) => record.symbol === 'MISHKA')
-      setHasAvailableClaim(!!parseFloat(token.amount))
-      setUnclaimedAmount(CurrencyAmount.fromRawAmount(token, JSBI.BigInt(token.amount)))
-    }
-  }
-
   const onClaim = () => {
     setAttempting(true)
-    // claimCallback()
-    //   .then((hash) => {
-    //     setHash(hash)
-    //   })
-    //   .catch((error) => {
-    //     setAttempting(false)
-    //     console.log(error)
-    //   })
   }
-
-  useEffect(() => {
-    getUnclaimedAmount()
-  }, [])
 
   return (
     <AppBody>
