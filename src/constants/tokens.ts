@@ -1,6 +1,6 @@
 import { Ether, Token, WETH9 } from '@uniswap/sdk-core'
 
-import { UNI_ADDRESS } from './addresses'
+import { MISHKA_ADDRESS, UNI_ADDRESS } from './addresses'
 import { SupportedChainId } from './chains'
 
 export const AMPL = new Token(
@@ -136,13 +136,10 @@ export const ETH2X_FLI = new Token(
   'ETH2x-FLI',
   'ETH 2x Flexible Leverage Index'
 )
-export const MISHKA = new Token(
-  SupportedChainId.MAINNET,
-  '0x976091738973b520A514ea206AcDD008A09649De',
-  9,
-  'MISHKA',
-  'Mishka'
-)
+export const MISHKA: { [chainId: number]: Token } = {
+  [SupportedChainId.MAINNET]: new Token(SupportedChainId.MAINNET, MISHKA_ADDRESS[1], 9, 'MISHKA', 'Mishka'),
+  [SupportedChainId.ROPSTEN]: new Token(SupportedChainId.ROPSTEN, MISHKA_ADDRESS[3], 9, 'MISHKA', 'Mishka'),
+}
 export const UNI: { [chainId: number]: Token } = {
   [SupportedChainId.MAINNET]: new Token(SupportedChainId.MAINNET, UNI_ADDRESS[1], 18, 'UNI', 'Uniswap'),
   [SupportedChainId.RINKEBY]: new Token(SupportedChainId.RINKEBY, UNI_ADDRESS[4], 18, 'UNI', 'Uniswap'),

@@ -239,7 +239,7 @@ export function useCurrency(currencyId: string | null | undefined): Currency | n
     [chainId]
   )
   const weth = chainId ? WETH9_EXTENDED[chainId] : undefined
-  const mishka = chainId ? MISHKA : undefined
+  const mishka = chainId ? MISHKA[chainId] : undefined
   if (currencyId === null || currencyId === undefined) return currencyId
   if (weth?.address?.toUpperCase() === currencyId?.toUpperCase()) return weth
   if (isMISHKA) return mishka

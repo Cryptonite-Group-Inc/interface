@@ -79,7 +79,7 @@ export const COMMON_BASES: ChainCurrencyList = {
   [SupportedChainId.MAINNET]: [
     ExtendedEther.onChain(SupportedChainId.MAINNET),
     DAI,
-    MISHKA,
+    MISHKA[SupportedChainId.MAINNET],
     USDC,
     USDT,
     WBTC,
@@ -87,6 +87,7 @@ export const COMMON_BASES: ChainCurrencyList = {
   ],
   [SupportedChainId.ROPSTEN]: [
     ExtendedEther.onChain(SupportedChainId.ROPSTEN),
+    MISHKA[SupportedChainId.ROPSTEN],
     WETH9_EXTENDED[SupportedChainId.ROPSTEN],
   ],
   [SupportedChainId.RINKEBY]: [
