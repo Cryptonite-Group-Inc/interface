@@ -1,6 +1,6 @@
 import { Ether, Token, WETH9 } from '@uniswap/sdk-core'
 
-import { MISHKA_ADDRESS, UNI_ADDRESS } from './addresses'
+import { MISHKA_ADDRESS, MISHKA2_ADDRESS, UNI_ADDRESS } from './addresses'
 import { SupportedChainId } from './chains'
 
 export const AMPL = new Token(
@@ -140,6 +140,11 @@ export const MISHKA: { [chainId: number]: Token } = {
   [SupportedChainId.MAINNET]: new Token(SupportedChainId.MAINNET, MISHKA_ADDRESS[1], 9, 'MISHKA', 'Mishka'),
   [SupportedChainId.ROPSTEN]: new Token(SupportedChainId.ROPSTEN, MISHKA_ADDRESS[3], 9, 'MISHKA', 'Mishka'),
 }
+export const MISHKA2: { [chainId: number]: Token } = {
+  [SupportedChainId.MAINNET]: new Token(SupportedChainId.MAINNET, MISHKA2_ADDRESS[1], 18, 'MISHKA2', 'Mishka2'),
+  [SupportedChainId.ROPSTEN]: new Token(SupportedChainId.ROPSTEN, MISHKA2_ADDRESS[3], 18, 'MISHKA2', 'Mishka2'),
+}
+
 export const UNI: { [chainId: number]: Token } = {
   [SupportedChainId.MAINNET]: new Token(SupportedChainId.MAINNET, UNI_ADDRESS[1], 18, 'UNI', 'Uniswap'),
   [SupportedChainId.RINKEBY]: new Token(SupportedChainId.RINKEBY, UNI_ADDRESS[4], 18, 'UNI', 'Uniswap'),

@@ -1,9 +1,11 @@
 import { isAddress } from '@ethersproject/address'
 import { Trans } from '@lingui/macro'
-import { Currency, CurrencyAmount } from '@uniswap/sdk-core'
-import { useState } from 'react'
+import { Currency, CurrencyAmount, Token } from '@uniswap/sdk-core'
+import { MouseoverTooltip } from 'components/Tooltip'
+import { useContext, useEffect, useMemo, useState } from 'react'
+import { CheckCircle, HelpCircle } from 'react-feather'
 import { Text } from 'rebass'
-import styled from 'styled-components/macro'
+import styled, { ThemeContext } from 'styled-components/macro'
 
 import Circle from '../../assets/images/blue-loader.svg'
 import tokenLogo from '../../assets/images/token-logo.png'
@@ -12,9 +14,13 @@ import { AutoColumn, ColumnCenter } from '../../components/Column'
 import Confetti from '../../components/Confetti'
 import { Break, CardSection, DataCard } from '../../components/earn/styled'
 import { CardBGImage, CardNoise } from '../../components/earn/styled'
+import Loader from '../../components/Loader'
 import { RowBetween } from '../../components/Row'
-import { MISHKA } from '../../constants/tokens'
+import { MISHKA, MISHKA2 } from '../../constants/tokens'
+import { ApprovalState } from '../../hooks/useApproveCallback'
+import { useMishka2Contract, useMishkaContract } from '../../hooks/useContract'
 import useENS from '../../hooks/useENS'
+import { useTokenAllowance } from '../../hooks/useTokenAllowance'
 import { useActiveWeb3React } from '../../hooks/web3'
 import { useIsTransactionPending } from '../../state/transactions/hooks'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
@@ -43,28 +49,98 @@ const ConfirmOrLoadingWrapper = styled.div<{ activeBG: boolean }>`
 `
 
 const ConfirmedIcon = styled(ColumnCenter)`
-  padding: 60px 0;
+  padding: 30px 0;
 `
 
 export default function Claim() {
+  const theme = useContext(ThemeContext)
   const { account, chainId } = useActiveWeb3React()
   const { address: parsedAddress } = useENS(account)
 
-  const mishka = chainId ? MISHKA[chainId] : undefined
-  const unclaimedAmount: CurrencyAmount<Currency> | undefined = useCurrencyBalance(parsedAddress ?? undefined, mishka)
-  const hasAvailableClaim = !!unclaimedAmount
+  const mishka: Token | undefined = chainId ? MISHKA[chainId] : undefined
+  const mishka2: Token | undefined = chainId ? MISHKA2[chainId] : undefined
+  const mishkaBalance: CurrencyAmount<Currency> | undefined = useCurrencyBalance(parsedAddress ?? undefined, mishka)
+  const unclaimedAmount = Number(mishkaBalance?.toFixed(0))
+  const cliamableAmount = unclaimedAmount * 1000000000
+  const hasAvailableClaim: boolean = unclaimedAmount > 0
 
   // used for UI loading states
+  const [pendingApproval, setPendingApproval] = useState<boolean>(false)
+  const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
   const [attempting, setAttempting] = useState<boolean>(false)
+
   const [hash, setHash] = useState<string | undefined>()
 
-  // monitor the status of the claim from contracts and txns
   const claimPending = useIsTransactionPending(hash ?? '')
   const claimConfirmed = hash && !claimPending
 
-  const onClaim = () => {
-    setAttempting(true)
+  const mishkaContract = useMishkaContract()
+  const mishka2Contract = useMishka2Contract()
+  const spender: string | undefined = mishka2Contract?.address
+  const currentAllowance = useTokenAllowance(mishka, parsedAddress ?? undefined, spender)
+  // const pendingApproval = useHasPendingApproval(mishka?.address, spender)
+
+  // check the current approval status
+  const approvalState: ApprovalState = useMemo(() => {
+    if (!currentAllowance) return ApprovalState.UNKNOWN
+
+    return currentAllowance.lessThan(cliamableAmount)
+      ? pendingApproval
+        ? ApprovalState.PENDING
+        : ApprovalState.NOT_APPROVED
+      : ApprovalState.APPROVED
+  }, [currentAllowance, pendingApproval, cliamableAmount])
+
+  const showApproveFlow =
+    approvalState === ApprovalState.NOT_APPROVED ||
+    approvalState === ApprovalState.PENDING ||
+    (approvalSubmitted && approvalState === ApprovalState.APPROVED)
+
+  const handleApprove = async () => {
+    if (mishkaContract) {
+      setPendingApproval(true)
+      await mishkaContract
+        .approve(mishka2Contract?.address, cliamableAmount)
+        .then((response: any) => {
+          console.log('approve response ', response)
+        })
+        .catch((error: any) => {
+          setPendingApproval(false)
+          console.log(error)
+        })
+    }
   }
+
+  const handleClaim = async () => {
+    if (mishka2Contract) {
+      setAttempting(true)
+      await mishka2Contract
+        .claimV2(cliamableAmount)
+        .then((response: any) => {
+          console.log('claim response ', response)
+          setHash(response.hash)
+        })
+        .catch((error: any) => {
+          setAttempting(false)
+          console.log(error)
+        })
+    }
+  }
+
+  const handleClose = () => {
+    setAttempting(false)
+    setHash('')
+    setApprovalSubmitted(false)
+  }
+
+  useEffect(() => {
+    if (approvalState === ApprovalState.PENDING) {
+      setApprovalSubmitted(true)
+    }
+    if (approvalState === ApprovalState.APPROVED) {
+      setPendingApproval(false)
+    }
+  }, [approvalState, approvalSubmitted, pendingApproval])
 
   return (
     <AppBody>
@@ -81,7 +157,7 @@ export default function Claim() {
                 </TYPE.white>
               </RowBetween>
               <TYPE.white fontWeight={700} fontSize={36}>
-                <Trans>{unclaimedAmount?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MISHKA</Trans>
+                <Trans>{mishkaBalance?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MISHKA</Trans>
               </TYPE.white>
             </CardSection>
             <Break />
@@ -92,13 +168,45 @@ export default function Claim() {
                 <Trans>Account has no available claim</Trans>
               </TYPE.error>
             )}
+            {showApproveFlow && (
+              <ButtonPrimary
+                disabled={approvalState === ApprovalState.APPROVED}
+                padding="16px 16px"
+                width="100%"
+                $borderRadius="12px"
+                mt="1rem"
+                onClick={handleApprove}
+              >
+                <Trans>{approvalState === ApprovalState.APPROVED ? 'You can now claim MISHKA' : 'Approve'}</Trans>
+                {approvalState === ApprovalState.PENDING ? (
+                  <Loader stroke="white" style={{ position: 'absolute', right: '20px' }} />
+                ) : approvalSubmitted && approvalState === ApprovalState.APPROVED ? (
+                  <CheckCircle size="20" color={theme.green1} style={{ position: 'absolute', right: '20px' }} />
+                ) : (
+                  <div style={{ position: 'absolute', right: '20px' }}>
+                    <MouseoverTooltip
+                      text={
+                        <Trans>
+                          You must give the Mishka smart contracts permission to use your {mishka2?.symbol}. You only
+                          have to do this once per token.
+                        </Trans>
+                      }
+                    >
+                      <HelpCircle size="20" color={'white'} style={{ marginLeft: '8px' }} />
+                    </MouseoverTooltip>
+                  </div>
+                )}
+              </ButtonPrimary>
+            )}
             <ButtonPrimary
-              disabled={!isAddress(parsedAddress ?? '') || !hasAvailableClaim}
+              disabled={
+                !isAddress(parsedAddress ?? '') || !hasAvailableClaim || approvalState !== ApprovalState.APPROVED
+              }
               padding="16px 16px"
               width="100%"
               $borderRadius="12px"
               mt="1rem"
-              onClick={onClaim}
+              onClick={handleClaim}
             >
               <Trans>Claim MISHKA</Trans>
             </ButtonPrimary>
@@ -115,14 +223,14 @@ export default function Claim() {
               <UniTokenAnimated width="72px" src={tokenLogo} alt="MISHKA logo" />
             )}
           </ConfirmedIcon>
-          <AutoColumn gap="100px" justify={'center'}>
+          <AutoColumn gap="40px" justify={'center'}>
             <AutoColumn gap="12px" justify={'center'}>
               <TYPE.largeHeader fontWeight={600} color="black">
                 {claimConfirmed ? <Trans>Claimed</Trans> : <Trans>Claiming</Trans>}
               </TYPE.largeHeader>
               {!claimConfirmed && (
                 <Text fontSize={36} color={'#ff007a'} fontWeight={800}>
-                  <Trans>{unclaimedAmount?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MISHKA</Trans>
+                  <Trans>{mishkaBalance?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MISHKA</Trans>
                 </Text>
               )}
               {parsedAddress && (
@@ -133,6 +241,9 @@ export default function Claim() {
             </AutoColumn>
             {claimConfirmed && (
               <>
+                <ButtonPrimary padding="16px 16px" width="100%" $borderRadius="12px" mt="1rem" onClick={handleClose}>
+                  <Trans>Close</Trans>
+                </ButtonPrimary>
                 <TYPE.subHeader fontWeight={500} color="black">
                   <span role="img" aria-label="party-hat">
                     🎉{' '}

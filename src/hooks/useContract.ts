@@ -18,6 +18,8 @@ import ERC20_BYTES32_ABI from 'abis/erc20_bytes32.json'
 import ERC721_ABI from 'abis/erc721.json'
 import ERC1155_ABI from 'abis/erc1155.json'
 import GOVERNOR_BRAVO_ABI from 'abis/governor-bravo.json'
+import MISHKA_ABI from 'abis/mishka.json'
+import MISHKA2_ABI from 'abis/mishka2.json'
 import WETH_ABI from 'abis/weth.json'
 import {
   ARGENT_WALLET_DETECTOR_ADDRESS,
@@ -38,7 +40,7 @@ import { V3Migrator } from 'types/v3/V3Migrator'
 import { getContract } from 'utils'
 
 import { ArgentWalletDetector, EnsPublicResolver, EnsRegistrar, Erc20, Erc721, Erc1155, Weth } from '../abis/types'
-import { UNI, WETH9_EXTENDED } from '../constants/tokens'
+import { MISHKA, MISHKA2, UNI, WETH9_EXTENDED } from '../constants/tokens'
 import { useActiveWeb3React } from './web3'
 
 // returns null on errors
@@ -134,6 +136,16 @@ export function useGovernanceBravoContract(): Contract | null {
 }
 
 export const useLatestGovernanceContract = useGovernanceBravoContract
+
+export function useMishkaContract() {
+  const { chainId } = useActiveWeb3React()
+  return useContract(chainId ? MISHKA[chainId]?.address : undefined, MISHKA_ABI, true)
+}
+
+export function useMishka2Contract() {
+  const { chainId } = useActiveWeb3React()
+  return useContract(chainId ? MISHKA2[chainId]?.address : undefined, MISHKA2_ABI, true)
+}
 
 export function useUniContract() {
   const { chainId } = useActiveWeb3React()
