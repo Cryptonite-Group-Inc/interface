@@ -61,7 +61,7 @@ export default function Claim() {
   const mishka2: Token | undefined = chainId ? MISHKA2[chainId] : undefined
   const mishkaBalance: CurrencyAmount<Currency> | undefined = useCurrencyBalance(parsedAddress ?? undefined, mishka)
   const unclaimedAmount = Number(mishkaBalance?.toFixed(0))
-  const cliamableAmount = unclaimedAmount * 1000000000
+  const claimableAmount = (unclaimedAmount * 1000000000).toString() // make as string to solve big number issue
   const hasAvailableClaim: boolean = unclaimedAmount > 0
 
   // used for UI loading states
@@ -84,12 +84,12 @@ export default function Claim() {
   const approvalState: ApprovalState = useMemo(() => {
     if (!currentAllowance) return ApprovalState.UNKNOWN
 
-    return currentAllowance.lessThan(cliamableAmount)
+    return currentAllowance.lessThan(claimableAmount)
       ? pendingApproval
         ? ApprovalState.PENDING
         : ApprovalState.NOT_APPROVED
       : ApprovalState.APPROVED
-  }, [currentAllowance, pendingApproval, cliamableAmount])
+  }, [currentAllowance, pendingApproval, claimableAmount])
 
   const showApproveFlow =
     approvalState === ApprovalState.NOT_APPROVED ||
@@ -100,7 +100,7 @@ export default function Claim() {
     if (mishkaContract) {
       setPendingApproval(true)
       await mishkaContract
-        .approve(mishka2Contract?.address, cliamableAmount)
+        .approve(mishka2Contract?.address, claimableAmount)
         .then((response: any) => {
           console.log('approve response ', response)
         })
@@ -115,7 +115,7 @@ export default function Claim() {
     if (mishka2Contract) {
       setAttempting(true)
       await mishka2Contract
-        .claimV2(cliamableAmount)
+        .claimV2(claimableAmount)
         .then((response: any) => {
           console.log('claim response ', response)
           setHash(response.hash)
