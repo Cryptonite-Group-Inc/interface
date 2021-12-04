@@ -16,7 +16,7 @@ import { Break, CardSection, DataCard } from '../../components/earn/styled'
 import { CardBGImage, CardNoise } from '../../components/earn/styled'
 import Loader from '../../components/Loader'
 import { RowBetween } from '../../components/Row'
-import { MISHKA, MISHKA2 } from '../../constants/tokens'
+import { MISHKA } from '../../constants/tokens'
 import { ApprovalState } from '../../hooks/useApproveCallback'
 import { useMishka2Contract, useMishkaContract } from '../../hooks/useContract'
 import useENS from '../../hooks/useENS'
@@ -31,6 +31,15 @@ import AppBody from '../AppBody'
 
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
+`
+
+const NoteWrapper = styled.div<{ maxWidth?: string }>`
+  max-width: ${({ maxWidth }) => maxWidth ?? '480px'};
+  width: 100%;
+  padding: 1rem;
+  margin-top: 0;
+  margin-left: auto;
+  margin-right: auto;
 `
 
 const ModalUpper = styled(DataCard)`
@@ -58,8 +67,8 @@ export default function Claim() {
   const { address: parsedAddress } = useENS(account)
 
   const mishka: Token | undefined = chainId ? MISHKA[chainId] : undefined
-  const mishka2: Token | undefined = chainId ? MISHKA2[chainId] : undefined
   const mishkaBalance: CurrencyAmount<Currency> | undefined = useCurrencyBalance(parsedAddress ?? undefined, mishka)
+  const mishka2Balance = mishkaBalance?.divide(1000).add(mishkaBalance?.divide(10000))
   const unclaimedAmount = Number(mishkaBalance?.toFixed(0))
   const claimableAmount = (unclaimedAmount * 1000000000).toString() // make as string to solve big number issue
   const hasAvailableClaim: boolean = unclaimedAmount > 0
@@ -143,131 +152,165 @@ export default function Claim() {
   }, [approvalState, approvalSubmitted, pendingApproval])
 
   return (
-    <AppBody>
-      <Confetti start={Boolean(claimConfirmed && attempting)} />
-      {!attempting && (
-        <ContentWrapper gap="lg">
-          <ModalUpper>
-            <CardBGImage />
-            <CardNoise />
-            <CardSection gap="md">
-              <RowBetween>
-                <TYPE.white fontWeight={500}>
-                  <Trans>Claim MISHKA Token</Trans>
+    <>
+      <AppBody>
+        <Confetti start={Boolean(claimConfirmed && attempting)} />
+        {!attempting && (
+          <ContentWrapper gap="lg">
+            <ModalUpper>
+              <CardBGImage />
+              <CardNoise />
+              <CardSection gap="md">
+                <RowBetween>
+                  <TYPE.largeHeader>
+                    <Trans>Claim MISHKA Token</Trans>
+                  </TYPE.largeHeader>
+                </RowBetween>
+                {parsedAddress && hasAvailableClaim && (
+                  <>
+                    <RowBetween>
+                      <TYPE.white fontWeight={500}>
+                        <Trans>{mishkaBalance?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} v1 Tokens</Trans>
+                      </TYPE.white>
+                    </RowBetween>
+                    <RowBetween>
+                      <TYPE.white fontWeight={500}>
+                        <Trans>
+                          = {mishkaBalance?.divide(1000).toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MISHKA v2
+                          Tokens + 10% Claim Bonus
+                        </Trans>
+                      </TYPE.white>
+                    </RowBetween>
+                  </>
+                )}
+                <TYPE.white fontWeight={700} fontSize={36}>
+                  <Trans>{mishka2Balance?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MISHKA</Trans>
                 </TYPE.white>
-              </RowBetween>
-              <TYPE.white fontWeight={700} fontSize={36}>
-                <Trans>{mishkaBalance?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MISHKA</Trans>
-              </TYPE.white>
-            </CardSection>
-            <Break />
-          </ModalUpper>
-          <AutoColumn gap="md" style={{ padding: '1rem', paddingTop: '0' }} justify="center">
-            {parsedAddress && !hasAvailableClaim && (
-              <TYPE.error error={true}>
-                <Trans>Account has no available claim</Trans>
-              </TYPE.error>
-            )}
-            {showApproveFlow && (
+              </CardSection>
+              <Break />
+            </ModalUpper>
+            <AutoColumn gap="md" style={{ padding: '1rem', paddingTop: '0' }} justify="center">
+              {parsedAddress && !hasAvailableClaim && (
+                <TYPE.error error={true}>
+                  <Trans>Account has no available claim</Trans>
+                </TYPE.error>
+              )}
+              {showApproveFlow && (
+                <ButtonPrimary
+                  disabled={approvalState === ApprovalState.APPROVED}
+                  padding="16px 16px"
+                  width="100%"
+                  $borderRadius="12px"
+                  mt="1rem"
+                  onClick={handleApprove}
+                >
+                  <Trans>
+                    {approvalState === ApprovalState.APPROVED ? 'You can now claim MISHKA' : 'Approve MISHKA V1'}
+                  </Trans>
+                  {approvalState === ApprovalState.PENDING ? (
+                    <Loader stroke="white" style={{ position: 'absolute', right: '20px' }} />
+                  ) : approvalSubmitted && approvalState === ApprovalState.APPROVED ? (
+                    <CheckCircle size="20" color={theme.green1} style={{ position: 'absolute', right: '20px' }} />
+                  ) : (
+                    <div style={{ position: 'absolute', right: '20px' }}>
+                      <MouseoverTooltip
+                        text={
+                          <Trans>
+                            You must give the Mishka smart contracts permission to use your MISHKA. You only have to do
+                            this once per token.
+                          </Trans>
+                        }
+                      >
+                        <HelpCircle size="20" color={'white'} style={{ marginLeft: '8px' }} />
+                      </MouseoverTooltip>
+                    </div>
+                  )}
+                </ButtonPrimary>
+              )}
               <ButtonPrimary
-                disabled={approvalState === ApprovalState.APPROVED}
+                disabled={
+                  !isAddress(parsedAddress ?? '') || !hasAvailableClaim || approvalState !== ApprovalState.APPROVED
+                }
                 padding="16px 16px"
                 width="100%"
                 $borderRadius="12px"
                 mt="1rem"
-                onClick={handleApprove}
+                onClick={handleClaim}
               >
-                <Trans>{approvalState === ApprovalState.APPROVED ? 'You can now claim MISHKA' : 'Approve'}</Trans>
-                {approvalState === ApprovalState.PENDING ? (
-                  <Loader stroke="white" style={{ position: 'absolute', right: '20px' }} />
-                ) : approvalSubmitted && approvalState === ApprovalState.APPROVED ? (
-                  <CheckCircle size="20" color={theme.green1} style={{ position: 'absolute', right: '20px' }} />
-                ) : (
-                  <div style={{ position: 'absolute', right: '20px' }}>
-                    <MouseoverTooltip
-                      text={
-                        <Trans>
-                          You must give the Mishka smart contracts permission to use your {mishka2?.symbol}. You only
-                          have to do this once per token.
-                        </Trans>
-                      }
-                    >
-                      <HelpCircle size="20" color={'white'} style={{ marginLeft: '8px' }} />
-                    </MouseoverTooltip>
-                  </div>
-                )}
+                <Trans>Claim MISHKA V2</Trans>
               </ButtonPrimary>
-            )}
-            <ButtonPrimary
-              disabled={
-                !isAddress(parsedAddress ?? '') || !hasAvailableClaim || approvalState !== ApprovalState.APPROVED
-              }
-              padding="16px 16px"
-              width="100%"
-              $borderRadius="12px"
-              mt="1rem"
-              onClick={handleClaim}
-            >
-              <Trans>Claim MISHKA</Trans>
-            </ButtonPrimary>
-          </AutoColumn>
-        </ContentWrapper>
-      )}
-      {(attempting || claimConfirmed) && (
-        <ConfirmOrLoadingWrapper activeBG={true}>
-          <CardNoise />
-          <ConfirmedIcon>
-            {!claimConfirmed ? (
-              <CustomLightSpinner src={Circle} alt="loader" size={'90px'} />
-            ) : (
-              <UniTokenAnimated width="72px" src={tokenLogo} alt="MISHKA logo" />
-            )}
-          </ConfirmedIcon>
-          <AutoColumn gap="40px" justify={'center'}>
-            <AutoColumn gap="12px" justify={'center'}>
-              <TYPE.largeHeader fontWeight={600} color="black">
-                {claimConfirmed ? <Trans>Claimed</Trans> : <Trans>Claiming</Trans>}
-              </TYPE.largeHeader>
-              {!claimConfirmed && (
-                <Text fontSize={36} color={'#ff007a'} fontWeight={800}>
-                  <Trans>{mishkaBalance?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MISHKA</Trans>
-                </Text>
+            </AutoColumn>
+          </ContentWrapper>
+        )}
+        {(attempting || claimConfirmed) && (
+          <ConfirmOrLoadingWrapper activeBG={true}>
+            <CardNoise />
+            <ConfirmedIcon>
+              {!claimConfirmed ? (
+                <CustomLightSpinner src={Circle} alt="loader" size={'90px'} />
+              ) : (
+                <UniTokenAnimated width="72px" src={tokenLogo} alt="MISHKA logo" />
               )}
-              {parsedAddress && (
+            </ConfirmedIcon>
+            <AutoColumn gap="40px" justify={'center'}>
+              <AutoColumn gap="12px" justify={'center'}>
                 <TYPE.largeHeader fontWeight={600} color="black">
-                  <Trans>for {shortenAddress(parsedAddress)}</Trans>
+                  {claimConfirmed ? <Trans>Claimed</Trans> : <Trans>Claiming</Trans>}
                 </TYPE.largeHeader>
+                {!claimConfirmed && (
+                  <Text fontSize={36} color={'#ff007a'} fontWeight={800}>
+                    <Trans>{mishkaBalance?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MISHKA</Trans>
+                  </Text>
+                )}
+                {parsedAddress && (
+                  <TYPE.largeHeader fontWeight={600} color="black">
+                    <Trans>for {shortenAddress(parsedAddress)}</Trans>
+                  </TYPE.largeHeader>
+                )}
+              </AutoColumn>
+              {claimConfirmed && (
+                <>
+                  <ButtonPrimary padding="16px 16px" width="100%" $borderRadius="12px" mt="1rem" onClick={handleClose}>
+                    <Trans>Close</Trans>
+                  </ButtonPrimary>
+                  <TYPE.subHeader fontWeight={500} color="black">
+                    <span role="img" aria-label="party-hat">
+                      🎉{' '}
+                    </span>
+                    <Trans>Welcome to team Mishka :) </Trans>
+                    <span role="img" aria-label="party-hat">
+                      🎉
+                    </span>
+                  </TYPE.subHeader>
+                </>
+              )}
+              {attempting && !hash && (
+                <TYPE.subHeader color="black">
+                  <Trans>Confirm this transaction in your wallet</Trans>
+                </TYPE.subHeader>
+              )}
+              {attempting && hash && !claimConfirmed && chainId && hash && (
+                <ExternalLink
+                  href={getExplorerLink(chainId, hash, ExplorerDataType.TRANSACTION)}
+                  style={{ zIndex: 99 }}
+                >
+                  <Trans>View transaction on Explorer</Trans>
+                </ExternalLink>
               )}
             </AutoColumn>
-            {claimConfirmed && (
-              <>
-                <ButtonPrimary padding="16px 16px" width="100%" $borderRadius="12px" mt="1rem" onClick={handleClose}>
-                  <Trans>Close</Trans>
-                </ButtonPrimary>
-                <TYPE.subHeader fontWeight={500} color="black">
-                  <span role="img" aria-label="party-hat">
-                    🎉{' '}
-                  </span>
-                  <Trans>Welcome to team Mishka :) </Trans>
-                  <span role="img" aria-label="party-hat">
-                    🎉
-                  </span>
-                </TYPE.subHeader>
-              </>
-            )}
-            {attempting && !hash && (
-              <TYPE.subHeader color="black">
-                <Trans>Confirm this transaction in your wallet</Trans>
-              </TYPE.subHeader>
-            )}
-            {attempting && hash && !claimConfirmed && chainId && hash && (
-              <ExternalLink href={getExplorerLink(chainId, hash, ExplorerDataType.TRANSACTION)} style={{ zIndex: 99 }}>
-                <Trans>View transaction on Explorer</Trans>
-              </ExternalLink>
-            )}
-          </AutoColumn>
-        </ConfirmOrLoadingWrapper>
-      )}
-    </AppBody>
+          </ConfirmOrLoadingWrapper>
+        )}
+      </AppBody>
+      <NoteWrapper>
+        <RowBetween>
+          <TYPE.italic fontWeight={500} style={{ fontFamily: 'system-ui' }}>
+            <Trans>
+              Note: MISHKA V1 has 1 Trillion total supply. MISHKA V2 will be 1 Billion total supply across all chains.
+              For example, if you have 1,000,000 V1 tokens, you will receive 1,000 V2 tokens.
+            </Trans>
+          </TYPE.italic>
+        </RowBetween>
+      </NoteWrapper>
+    </>
   )
 }

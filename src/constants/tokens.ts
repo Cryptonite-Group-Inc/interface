@@ -137,12 +137,12 @@ export const ETH2X_FLI = new Token(
   'ETH 2x Flexible Leverage Index'
 )
 export const MISHKA: { [chainId: number]: Token } = {
-  [SupportedChainId.MAINNET]: new Token(SupportedChainId.MAINNET, MISHKA_ADDRESS[1], 9, 'MISHKA', 'Mishka'),
-  [SupportedChainId.ROPSTEN]: new Token(SupportedChainId.ROPSTEN, MISHKA_ADDRESS[3], 9, 'MISHKA', 'Mishka'),
+  [SupportedChainId.MAINNET]: new Token(SupportedChainId.MAINNET, MISHKA_ADDRESS[1], 9, 'MISHKA', 'Mishka v1'),
+  [SupportedChainId.ROPSTEN]: new Token(SupportedChainId.ROPSTEN, MISHKA_ADDRESS[3], 9, 'MISHKA', 'Mishka v1'),
 }
 export const MISHKA2: { [chainId: number]: Token } = {
-  [SupportedChainId.MAINNET]: new Token(SupportedChainId.MAINNET, MISHKA2_ADDRESS[1], 18, 'MISHKA2', 'Mishka2'),
-  [SupportedChainId.ROPSTEN]: new Token(SupportedChainId.ROPSTEN, MISHKA2_ADDRESS[3], 18, 'MISHKA2', 'Mishka2'),
+  [SupportedChainId.MAINNET]: new Token(SupportedChainId.MAINNET, MISHKA2_ADDRESS[1], 18, 'MISHKA', 'Mishka v2'),
+  [SupportedChainId.ROPSTEN]: new Token(SupportedChainId.ROPSTEN, MISHKA2_ADDRESS[3], 18, 'MISHKA', 'Mishka v2'),
 }
 
 export const UNI: { [chainId: number]: Token } = {
