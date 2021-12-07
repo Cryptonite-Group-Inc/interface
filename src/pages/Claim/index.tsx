@@ -24,6 +24,7 @@ import useAddTokenToMetamask from '../../hooks/useAddTokenToMetamask'
 import { ApprovalState } from '../../hooks/useApproveCallback'
 import { useMishka2Contract, useMishkaContract } from '../../hooks/useContract'
 import useENS from '../../hooks/useENS'
+import { useGetClaimRate } from '../../hooks/useGetClaimRate'
 import { useTokenAllowance } from '../../hooks/useTokenAllowance'
 import { useActiveWeb3React } from '../../hooks/web3'
 import { TransactionType } from '../../state/transactions/actions'
@@ -85,7 +86,9 @@ export default function Claim() {
   const unclaimedAmount = Number(mishkaBalance?.toFixed(0))
   const claimableAmount = (unclaimedAmount * 1000000000).toString() // make as string to solve big number issue
   const hasAvailableClaim: boolean = unclaimedAmount > 0
-  const [receivedAmount, setReceivedAmount] = useState<number>(0)
+  const [receivedAmount, setReceivedAmount] = useState<string>('')
+  const claimRate = useGetClaimRate()
+  const additionalPercent = (claimRate - 1000) / 10
 
   // used for UI loading states
   const [pendingApproval, setPendingApproval] = useState<boolean>(false)
@@ -102,7 +105,6 @@ export default function Claim() {
   const spender: string | undefined = mishka2Contract?.address
   const currentAllowance = useTokenAllowance(mishka, parsedAddress ?? undefined, spender)
   const { addToken, success } = useAddTokenToMetamask(mishka2)
-  // const pendingApproval = useHasPendingApproval(mishka?.address, spender)
 
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
@@ -172,7 +174,11 @@ export default function Claim() {
         const amount = receipt.logs.find((log) => log.address === mishka2?.address)?.data
         if (amount && mishka2) {
           const value = parseInt(amount, 16) / 1000000000000000000
-          setReceivedAmount(value)
+          const formatedValue = value
+            .toFixed(0)
+            .toString()
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+          setReceivedAmount(formatedValue)
         }
       })
     }
@@ -197,14 +203,10 @@ export default function Claim() {
                   <>
                     <RowBetween>
                       <TYPE.white fontWeight={500}>
-                        <Trans>{mishkaBalance?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} v1 Tokens</Trans>
-                      </TYPE.white>
-                    </RowBetween>
-                    <RowBetween>
-                      <TYPE.white fontWeight={500}>
                         <Trans>
-                          = {mishkaBalance?.divide(1000).toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MISHKA v2
-                          Tokens + 10% Claim Bonus
+                          You have {mishkaBalance?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MISHKA v1 Tokens.
+                          {additionalPercent > 0 ? `With a ${additionalPercent}% Claim Bonus, you` : 'You'} will receive
+                          this many MISHKA v2 tokens:
                         </Trans>
                       </TYPE.white>
                     </RowBetween>
@@ -291,7 +293,7 @@ export default function Claim() {
                 </TYPE.largeHeader>
                 {!claimConfirmed && (
                   <Text fontSize={36} color={'#ff007a'} fontWeight={800}>
-                    <Trans>{mishkaBalance?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MISHKA</Trans>
+                    <Trans>{mishkaBalanceToV2?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MISHKA</Trans>
                   </Text>
                 )}
                 {parsedAddress && (
@@ -319,15 +321,6 @@ export default function Claim() {
                   <ButtonPrimary padding="16px 16px" width="100%" $borderRadius="12px" onClick={handleClose}>
                     <Trans>Close</Trans>
                   </ButtonPrimary>
-                  {/* <TYPE.subHeader fontWeight={500} color="black">
-                    <span role="img" aria-label="party-hat">
-                      🎉{' '}
-                    </span>
-                    <Trans>Welcome to team Mishka :) </Trans>
-                    <span role="img" aria-label="party-hat">
-                      🎉
-                    </span>
-                  </TYPE.subHeader> */}
                 </>
               )}
               {attempting && !hash && (
@@ -348,18 +341,16 @@ export default function Claim() {
         )}
       </AppBody>
       <ExtraWrapper>
-        {!attempting && !hash && (
-          <RowBetween>
-            <TYPE.italic fontWeight={500} style={{ fontFamily: 'system-ui' }}>
-              <Trans>
-                Note: MISHKA V1 has 1 Trillion total supply. MISHKA V2 will be 1 Billion total supply across all chains.
-                For example, if you have 1,000,000 V1 tokens, you will receive 1,000 V2 tokens.
-              </Trans>
-            </TYPE.italic>
-          </RowBetween>
-        )}
+        <RowBetween>
+          <TYPE.italic fontWeight={500} style={{ fontFamily: 'system-ui' }}>
+            <Trans>
+              Note: MISHKA V1 has 1 Trillion total supply. MISHKA V2 will be 1 Billion total supply across all chains.
+              For example, if you have 1,000,000 V1 tokens, you will receive 1,000 V2 tokens.
+            </Trans>
+          </TYPE.italic>
+        </RowBetween>
         {claimConfirmed && (
-          <AutoColumn gap="12px" justify={'center'}>
+          <AutoColumn gap="12px" justify={'center'} style={{ marginTop: '50px' }}>
             <TYPE.largeHeader fontSize={16}>
               <Trans>Follow Mishka Token:</Trans>
             </TYPE.largeHeader>
