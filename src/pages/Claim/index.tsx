@@ -79,16 +79,17 @@ export default function Claim() {
   const { account, chainId, library } = useActiveWeb3React()
   const { address: parsedAddress } = useENS(account)
 
+  const claimRate = useGetClaimRate()
+  const additionalPercent = (claimRate - 1000) / 10
+
   const mishka: Token | undefined = chainId ? MISHKA[chainId] : undefined
   const mishka2: Token | undefined = chainId ? MISHKA2[chainId] : undefined
-  const mishkaBalance: CurrencyAmount<Currency> | undefined = useCurrencyBalance(parsedAddress ?? undefined, mishka)
-  const mishkaBalanceToV2 = mishkaBalance?.divide(1000).add(mishkaBalance?.divide(10000))
-  const unclaimedAmount = Number(mishkaBalance?.toFixed(0))
+  const amountV1: CurrencyAmount<Currency> | undefined = useCurrencyBalance(parsedAddress ?? undefined, mishka)
+  const amountV2: CurrencyAmount<Currency> | undefined = amountV1?.divide(1000000).multiply(claimRate.toString())
+  const unclaimedAmount = Number(amountV1?.toFixed(0))
   const claimableAmount = (unclaimedAmount * 1000000000).toString() // make as string to solve big number issue
   const hasAvailableClaim: boolean = unclaimedAmount > 0
   const [receivedAmount, setReceivedAmount] = useState<string>('')
-  const claimRate = useGetClaimRate()
-  const additionalPercent = (claimRate - 1000) / 10
 
   // used for UI loading states
   const [pendingApproval, setPendingApproval] = useState<boolean>(false)
@@ -204,7 +205,7 @@ export default function Claim() {
                     <RowBetween>
                       <TYPE.white fontWeight={500}>
                         <Trans>
-                          You have {mishkaBalance?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MISHKA v1 Tokens.
+                          You have {amountV1?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MISHKA v1 Tokens.
                           {additionalPercent > 0 ? `With a ${additionalPercent}% Claim Bonus, you` : 'You'} will receive
                           this many MISHKA v2 tokens:
                         </Trans>
@@ -213,7 +214,7 @@ export default function Claim() {
                   </>
                 )}
                 <TYPE.white fontWeight={700} fontSize={36}>
-                  <Trans>{mishkaBalanceToV2?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MISHKA</Trans>
+                  <Trans>{amountV2?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MISHKA</Trans>
                 </TYPE.white>
               </CardSection>
               <Break />
@@ -293,7 +294,7 @@ export default function Claim() {
                 </TYPE.largeHeader>
                 {!claimConfirmed && (
                   <Text fontSize={36} color={'#ff007a'} fontWeight={800}>
-                    <Trans>{mishkaBalanceToV2?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MISHKA</Trans>
+                    <Trans>{amountV2?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MISHKA</Trans>
                   </Text>
                 )}
                 {parsedAddress && (
