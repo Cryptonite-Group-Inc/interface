@@ -33,19 +33,6 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "MaxTransaction",
-        "type": "uint256"
-      }
-    ],
-    "name": "MaxOutTxLimit",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
         "indexed": true,
         "internalType": "address",
         "name": "previousOwner",
@@ -94,13 +81,24 @@
         "type": "address"
       }
     ],
-    "name": "addExchangeAddress",
+    "name": "addFeeIgnoreAddress",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_v2Amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_ethAmount",
+        "type": "uint256"
+      }
+    ],
     "name": "addLiquidity",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -115,19 +113,6 @@
       }
     ],
     "name": "addWhitelist",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address[]",
-        "name": "_addresses",
-        "type": "address[]"
-      }
-    ],
-    "name": "addWhitelistMultiple",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -214,19 +199,6 @@
   },
   {
     "inputs": [],
-    "name": "contractBalance",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "decimals",
     "outputs": [
       {
@@ -263,16 +235,16 @@
     "type": "function"
   },
   {
-    "inputs": [
+    "inputs": [],
+    "name": "getClaimRate",
+    "outputs": [
       {
-        "internalType": "address",
-        "name": "_address",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
-    "name": "forgiveAddress",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -297,57 +269,6 @@
       }
     ],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_address",
-        "type": "address"
-      }
-    ],
-    "name": "isExchangeAddress",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_address",
-        "type": "address"
-      }
-    ],
-    "name": "isForgiven",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "isPublicTradingOpen",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -384,13 +305,6 @@
   },
   {
     "inputs": [],
-    "name": "openPublicTrading",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "owner",
     "outputs": [
       {
@@ -400,6 +314,19 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_address",
+        "type": "address"
+      }
+    ],
+    "name": "removeFeeIgnoreAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -425,38 +352,51 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "_buyFee",
+        "type": "uint256"
+      }
+    ],
+    "name": "setBuyFee",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "_enabled",
+        "type": "bool"
+      }
+    ],
+    "name": "setClaimEnabled",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_rate",
+        "type": "uint256"
+      }
+    ],
+    "name": "setClaimRate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
-        "name": "_address",
+        "name": "_feeWallet",
         "type": "address"
       }
     ],
-    "name": "rmExchangeAddress",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_address",
-        "type": "address"
-      }
-    ],
-    "name": "rmForgivenAddress",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address payable",
-        "name": "_liquidityAddress",
-        "type": "address"
-      }
-    ],
-    "name": "setLiquidityAddress",
+    "name": "setFeeWallet",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -465,11 +405,11 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "charity",
+        "name": "_sellFee",
         "type": "uint256"
       }
     ],
-    "name": "setLiquidityBasisPoints",
+    "name": "setSellFee",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -477,58 +417,12 @@
   {
     "inputs": [
       {
-        "internalType": "address payable",
-        "name": "_marketAddress",
-        "type": "address"
+        "internalType": "bool",
+        "name": "_enabled",
+        "type": "bool"
       }
     ],
-    "name": "setMarketAddress",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "toll",
-        "type": "uint256"
-      }
-    ],
-    "name": "setMarketBasisPoints",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "tokens",
-        "type": "uint256"
-      }
-    ],
-    "name": "setNumOfTokensForDisperse",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "txLimit",
-        "type": "uint256"
-      }
-    ],
-    "name": "setTxLimit",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "setTxLimitMax",
+    "name": "setTransferEnabled",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -624,5 +518,22 @@
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "withdraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "stateMutability": "payable",
+    "type": "receive"
   }
 ]
