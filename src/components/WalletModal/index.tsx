@@ -22,7 +22,7 @@ import { ApplicationModal } from '../../state/application/reducer'
 import { TYPE } from '../../theme'
 import { isMobile } from '../../utils/userAgent'
 import AccountDetails from '../AccountDetails'
-import Card from '../Card'
+// import Card from '../Card'
 import Modal from '../Modal'
 import Option from './Option'
 import PendingView from './PendingView'
@@ -109,15 +109,15 @@ const HoverText = styled.div`
   }
 `
 
-const LinkCard = styled(Card)`
-  background-color: ${({ theme }) => theme.primary1};
-  color: ${({ theme }) => theme.white};
+// const LinkCard = styled(Card)`
+//   background-color: ${({ theme }) => theme.primary1};
+//   color: ${({ theme }) => theme.white};
 
-  :hover {
-    cursor: pointer;
-    filter: brightness(0.9);
-  }
-`
+//   :hover {
+//     cursor: pointer;
+//     filter: brightness(0.9);
+//   }
+// `
 
 const WALLET_VIEWS = {
   OPTIONS: 'options',

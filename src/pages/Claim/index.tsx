@@ -86,10 +86,10 @@ export default function Claim() {
   const mishka2: Token | undefined = chainId ? MISHKA2[chainId] : undefined
   const amountV1: CurrencyAmount<Currency> | undefined = useCurrencyBalance(parsedAddress ?? undefined, mishka)
   const amountV2: CurrencyAmount<Currency> | undefined = claimRate
-    ? amountV1?.divide(1000000).multiply(claimRate.toString())
+    ? amountV1?.divide(1e6).multiply(claimRate.toString())
     : undefined
   const unclaimedAmount = Number(amountV1?.toFixed(0))
-  const claimableAmount = (unclaimedAmount * 1000000000).toString() // make as string to solve big number issue
+  const claimableAmount = (unclaimedAmount * 1e9).toString() // make as string to solve big number issue
   const hasAvailableClaim: boolean = unclaimedAmount > 0
   const [receivedAmount, setReceivedAmount] = useState<string>('')
 
@@ -176,7 +176,7 @@ export default function Claim() {
       library?.getTransactionReceipt(hash ?? '').then((receipt) => {
         const amount = receipt.logs.find((log) => log.address === mishka2?.address)?.data
         if (amount && mishka2) {
-          const value = parseInt(amount, 16) / 1000000000000000000
+          const value = parseInt(amount, 16) / 1e18
           const formatedValue = value
             .toFixed(0)
             .toString()

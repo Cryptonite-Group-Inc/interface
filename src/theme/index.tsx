@@ -7,7 +7,6 @@ import styled, {
   ThemeProvider as StyledComponentsThemeProvider,
 } from 'styled-components/macro'
 
-// import BgDark from '../assets/images/bg-dark.png'
 import { useIsDarkMode } from '../state/user/hooks'
 import { Colors } from './styled'
 
@@ -213,10 +212,6 @@ html {
 
 body {
   min-height: 100vh;
-  // background-position: center center, 0px -30vh;
-  // background-repeat: no-repeat;
-  // background-size: cover;
-  // background-image: url(), radial-gradient(50% 50% at 50% 50%, rgba(0, 113, 188, 0.1) 0%, rgba(7, 6, 24, 0) 100%);
   background: #24243e;
   background: -webkit-linear-gradient(to left, #24243e, #302b63, #0f0c29);
   background: linear-gradient(to left, #24243e, #302b63, #0f0c29);
