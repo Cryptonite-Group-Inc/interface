@@ -81,6 +81,32 @@
         "type": "address"
       }
     ],
+    "name": "addBlackList",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address[]",
+        "name": "_addresses",
+        "type": "address[]"
+      }
+    ],
+    "name": "addBlackListMultiple",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_address",
+        "type": "address"
+      }
+    ],
     "name": "addFeeIgnoreAddress",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -112,7 +138,20 @@
         "type": "address"
       }
     ],
-    "name": "addWhitelist",
+    "name": "addWhiteList",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address[]",
+        "name": "_addresses",
+        "type": "address[]"
+      }
+    ],
+    "name": "addWhiteListMultiple",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -248,6 +287,45 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "getClaimWallet",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getCoolDownSeconds",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getFeeWallet",
+    "outputs": [
+      {
+        "internalType": "address payable",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -279,7 +357,39 @@
         "type": "address"
       }
     ],
-    "name": "isWhitelisted",
+    "name": "isBlackListed",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "isPublicTradingOpen",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_address",
+        "type": "address"
+      }
+    ],
+    "name": "isWhiteListed",
     "outputs": [
       {
         "internalType": "bool",
@@ -324,6 +434,19 @@
         "type": "address"
       }
     ],
+    "name": "removeBlackList",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_address",
+        "type": "address"
+      }
+    ],
     "name": "removeFeeIgnoreAddress",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -337,7 +460,7 @@
         "type": "address"
       }
     ],
-    "name": "removeWhitelist",
+    "name": "removeWhiteList",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -392,11 +515,63 @@
     "inputs": [
       {
         "internalType": "address",
+        "name": "_claimWallet",
+        "type": "address"
+      }
+    ],
+    "name": "setClaimWallet",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_coolDownSeconds",
+        "type": "uint256"
+      }
+    ],
+    "name": "setCoolDownSeconds",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address payable",
         "name": "_feeWallet",
         "type": "address"
       }
     ],
     "name": "setFeeWallet",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_maxWalletSize",
+        "type": "uint256"
+      }
+    ],
+    "name": "setMaxWalletSize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "_enabled",
+        "type": "bool"
+      }
+    ],
+    "name": "setPublicTradingOpened",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -417,12 +592,12 @@
   {
     "inputs": [
       {
-        "internalType": "bool",
-        "name": "_enabled",
-        "type": "bool"
+        "internalType": "uint256",
+        "name": "_txLimit",
+        "type": "uint256"
       }
     ],
-    "name": "setTransferEnabled",
+    "name": "setTxLimit",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -528,6 +703,19 @@
       }
     ],
     "name": "withdraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "withdrawV1",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
