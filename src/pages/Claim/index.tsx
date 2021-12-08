@@ -85,7 +85,9 @@ export default function Claim() {
   const mishka: Token | undefined = chainId ? MISHKA[chainId] : undefined
   const mishka2: Token | undefined = chainId ? MISHKA2[chainId] : undefined
   const amountV1: CurrencyAmount<Currency> | undefined = useCurrencyBalance(parsedAddress ?? undefined, mishka)
-  const amountV2: CurrencyAmount<Currency> | undefined = amountV1?.divide(1000000).multiply(claimRate.toString())
+  const amountV2: CurrencyAmount<Currency> | undefined = claimRate
+    ? amountV1?.divide(1000000).multiply(claimRate.toString())
+    : undefined
   const unclaimedAmount = Number(amountV1?.toFixed(0))
   const claimableAmount = (unclaimedAmount * 1000000000).toString() // make as string to solve big number issue
   const hasAvailableClaim: boolean = unclaimedAmount > 0
