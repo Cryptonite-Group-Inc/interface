@@ -174,7 +174,7 @@ export default function Claim() {
 
     if (claimConfirmed) {
       library?.getTransactionReceipt(hash ?? '').then((receipt) => {
-        const amount = receipt.logs.find((log) => log.address === mishka2?.address)?.data
+        const amount = receipt?.logs?.find((log) => log.address === mishka2?.address)?.data
         if (amount && mishka2) {
           const value = parseInt(amount, 16) / 1e18
           const formatedValue = value
@@ -292,7 +292,7 @@ export default function Claim() {
             <AutoColumn gap="20px" justify={'center'}>
               <AutoColumn gap="12px" justify={'center'}>
                 <TYPE.largeHeader color="black">
-                  {claimConfirmed ? <Trans>{receivedAmount} MISHKA</Trans> : <Trans>Claiming</Trans>}
+                  {claimConfirmed ? <Trans>{receivedAmount || 0} MISHKA</Trans> : <Trans>Claiming</Trans>}
                 </TYPE.largeHeader>
                 {!claimConfirmed && (
                   <Text fontSize={36} color={'#ff007a'} fontWeight={800}>
