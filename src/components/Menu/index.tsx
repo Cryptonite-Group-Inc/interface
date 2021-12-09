@@ -250,7 +250,7 @@ export default function Menu() {
               default:
                 return (
                   <MenuFlyout>
-                    <MenuItem href="">
+                    <MenuItem href="" disabled>
                       <div>
                         <Trans>About</Trans>
                       </div>
