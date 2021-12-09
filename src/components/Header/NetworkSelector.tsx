@@ -70,7 +70,7 @@ const FlyoutMenu = styled.div`
     margin-bottom: 12px;
   }
   ${({ theme }) => theme.mediaWidth.upToMedium`
-    bottom: 60px;
+    bottom: 75px;
     top: unset;
   `};
 

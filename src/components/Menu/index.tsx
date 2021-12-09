@@ -16,11 +16,11 @@ import {
   HelpCircle,
   Info,
   MessageCircle,
-  // Moon,
-  // Sun,
+  Moon,
+  Sun,
 } from 'react-feather'
 import { Link } from 'react-router-dom'
-// import { useDarkModeManager } from 'state/user/hooks'
+import { useDarkModeManager } from 'state/user/hooks'
 import styled, { css } from 'styled-components/macro'
 
 import { ReactComponent as MenuIcon } from '../../assets/images/menu.svg'
@@ -225,7 +225,7 @@ export default function Menu() {
   const openClaimModal = useToggleModal(ApplicationModal.ADDRESS_CLAIM)
   const showUNIClaimOption = Boolean(!!account && !!chainId && !L2_CHAIN_IDS.includes(chainId))
 
-  // const [darkMode, toggleDarkMode] = useDarkModeManager()
+  const [darkMode, toggleDarkMode] = useDarkModeManager()
 
   const [menu, setMenu] = useState<'main' | 'lang'>('main')
 
@@ -280,11 +280,11 @@ export default function Menu() {
                       </div>
                       <Globe opacity={0.6} size={16} />
                     </ToggleMenuItem>
-                    {/* <ToggleMenuItem onClick={() => toggleDarkMode()}>
+                    <ToggleMenuItem onClick={() => toggleDarkMode()}>
                       <div>{darkMode ? <Trans>Light Theme</Trans> : <Trans>Dark Theme</Trans>}</div>
                       {darkMode ? <Moon opacity={0.6} size={16} /> : <Sun opacity={0.6} size={16} />}
                     </ToggleMenuItem>
-                    <MenuItem href="https://docs.uniswap.org/">
+                    {/* <MenuItem href="https://docs.uniswap.org/">
                       <div>
                         <Trans>Docs</Trans>
                       </div>

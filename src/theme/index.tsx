@@ -72,7 +72,10 @@ function colors(darkMode: boolean): Colors {
     bg3: darkMode ? '#40444F' : '#CED0D9',
     bg4: darkMode ? '#565A69' : '#888D9B',
     bg5: darkMode ? '#6C7284' : '#888D9B',
-    bg6: darkMode ? '#1A2028' : '#6C7284',
+    bg6: darkMode ? '#070618' : '#888D9B',
+
+    // backgrounds / gradient
+    bgGradient: darkMode ? '#24243E, #302B63, #0F0C29' : '#A1DBFF, #CBEBFF, #F0F9FF',
 
     //specialty colors
     modalBG: darkMode ? 'rgba(0,0,0,.425)' : 'rgba(0,0,0,0.3)',
@@ -207,14 +210,7 @@ export const TYPE = {
 export const ThemedGlobalStyle = createGlobalStyle`
 html {
   color: ${({ theme }) => theme.text1};
-  background-color: ${({ theme }) => theme.bg1} !important;
-}
-
-body {
-  min-height: 100vh;
-  background: #24243e;
-  background: -webkit-linear-gradient(to left, #24243e, #302b63, #0f0c29);
-  background: linear-gradient(to left, #24243e, #302b63, #0f0c29);
+  background: linear-gradient(to left, ${({ theme }) => theme.bgGradient});
 }
 
 a {
