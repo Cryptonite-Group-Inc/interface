@@ -196,26 +196,26 @@ export default function Claim() {
               <CardNoise />
               <CardSection gap="md">
                 <RowBetween>
-                  <TYPE.largeHeader>
+                  <TYPE.largeHeader color="white">
                     <Trans>Claim MISHKA Token</Trans>
                   </TYPE.largeHeader>
                 </RowBetween>
                 {parsedAddress && hasAvailableClaim && (
                   <>
                     <RowBetween>
-                      <TYPE.mediumHeader fontWeight={500} fontSize={16}>
+                      <TYPE.white fontSize={16}>
                         <Trans>
                           You have {balanceV1?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MISHKA v1 Tokens.
                           {additionalPercent > 0 ? `With a ${additionalPercent}% Claim Bonus, you` : 'You'} will receive
                           this many MISHKA v2 tokens:
                         </Trans>
-                      </TYPE.mediumHeader>
+                      </TYPE.white>
                     </RowBetween>
                   </>
                 )}
-                <TYPE.subHeader fontWeight={700} fontSize={36}>
+                <TYPE.white fontWeight={700} fontSize={36}>
                   <Trans>{receiveAmountV2?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MISHKA</Trans>
-                </TYPE.subHeader>
+                </TYPE.white>
               </CardSection>
               <Break />
             </ModalUpper>
