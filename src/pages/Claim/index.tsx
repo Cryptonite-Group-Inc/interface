@@ -83,14 +83,13 @@ export default function Claim() {
 
   const mishka: Token | undefined = chainId ? MISHKA[chainId] : undefined
   const mishka2: Token | undefined = chainId ? MISHKA2[chainId] : undefined
-  const amountV1: CurrencyAmount<Currency> | undefined = useCurrencyBalance(parsedAddress ?? undefined, mishka)
-  const amountV2: CurrencyAmount<Currency> | undefined = claimRate
-    ? amountV1?.divide(1e6).multiply(claimRate.toString())
+  const balanceV1: CurrencyAmount<Currency> | undefined = useCurrencyBalance(parsedAddress ?? undefined, mishka)
+  const receiveAmountV2: CurrencyAmount<Currency> | undefined = claimRate
+    ? balanceV1?.divide(1e6).multiply(claimRate.toString())
     : undefined
-  const unclaimedAmount = Number(amountV1?.toFixed(0))
-  const claimableAmount = (unclaimedAmount * 1e9).toString() // make as string to solve big number issue
-  const hasAvailableClaim: boolean = unclaimedAmount > 0
-  const [receivedAmount, setReceivedAmount] = useState<string>('')
+  const claimableAmount: CurrencyAmount<Currency> | undefined = balanceV1?.multiply(1e9)
+  const hasAvailableClaim: boolean = Number(claimableAmount?.toFixed(0)) > 0
+  const [claimedAmount, setClaimedAmount] = useState<string>('')
 
   // used for UI loading states
   const [pendingApproval, setPendingApproval] = useState<boolean>(false)
@@ -110,7 +109,7 @@ export default function Claim() {
 
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
-    if (!currentAllowance) return ApprovalState.UNKNOWN
+    if (!currentAllowance || !claimableAmount) return ApprovalState.UNKNOWN
 
     return currentAllowance.lessThan(claimableAmount)
       ? pendingApproval
@@ -128,7 +127,7 @@ export default function Claim() {
     if (mishkaContract) {
       setPendingApproval(true)
       await mishkaContract
-        .approve(mishka2Contract?.address, claimableAmount)
+        .approve(mishka2Contract?.address, claimableAmount?.quotient.toString())
         .then()
         .catch((error: any) => {
           setPendingApproval(false)
@@ -141,7 +140,7 @@ export default function Claim() {
     if (mishka2Contract && account) {
       setAttempting(true)
       await mishka2Contract
-        .claimV2(claimableAmount)
+        .claimV2()
         .then((response: any) => {
           addTransaction(response, {
             type: TransactionType.CLAIM,
@@ -180,7 +179,7 @@ export default function Claim() {
             .toFixed(0)
             .toString()
             .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-          setReceivedAmount(formatedValue)
+          setClaimedAmount(formatedValue)
         }
       })
     }
@@ -206,7 +205,7 @@ export default function Claim() {
                     <RowBetween>
                       <TYPE.mediumHeader fontWeight={500} fontSize={16}>
                         <Trans>
-                          You have {amountV1?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MISHKA v1 Tokens.
+                          You have {balanceV1?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MISHKA v1 Tokens.
                           {additionalPercent > 0 ? `With a ${additionalPercent}% Claim Bonus, you` : 'You'} will receive
                           this many MISHKA v2 tokens:
                         </Trans>
@@ -215,7 +214,7 @@ export default function Claim() {
                   </>
                 )}
                 <TYPE.subHeader fontWeight={700} fontSize={36}>
-                  <Trans>{amountV2?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MISHKA</Trans>
+                  <Trans>{receiveAmountV2?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MISHKA</Trans>
                 </TYPE.subHeader>
               </CardSection>
               <Break />
@@ -291,11 +290,11 @@ export default function Claim() {
             <AutoColumn gap="20px" justify={'center'}>
               <AutoColumn gap="12px" justify={'center'}>
                 <TYPE.largeHeader color="black">
-                  {claimConfirmed ? <Trans>{receivedAmount || 0} MISHKA</Trans> : <Trans>Claiming</Trans>}
+                  {claimConfirmed ? <Trans>{claimedAmount || 0} MISHKA</Trans> : <Trans>Claiming</Trans>}
                 </TYPE.largeHeader>
                 {!claimConfirmed && (
                   <Text fontSize={36} color={'#ff007a'} fontWeight={800}>
-                    <Trans>{amountV2?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MISHKA</Trans>
+                    <Trans>{receiveAmountV2?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MISHKA</Trans>
                   </Text>
                 )}
                 {parsedAddress && (
