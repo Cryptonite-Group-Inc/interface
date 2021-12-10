@@ -26,6 +26,7 @@ export interface Colors {
 
   // backgrounds / gradient
   bgGradient: Color
+  bgGradient1: Color
 
   modalBG: Color
   advancedBG: Color

@@ -49,14 +49,13 @@ const ExtraWrapper = styled.div<{ maxWidth?: string }>`
 `
 
 const ModalUpper = styled(DataCard)`
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  background: radial-gradient(76.02% 75.41% at 1.84% 0%, #ff007a 0%, #021d43 100%);
+  background: radial-gradient(76.02% 75.41% at 1.84% 0%, ${({ theme }) => theme.bgGradient1});
 `
 
 const ConfirmOrLoadingWrapper = styled.div<{ activeBG: boolean }>`
   width: 100%;
   padding: 24px;
-  border-radius: 22px;
+  border-radius: 20px;
   position: relative;
   background: ${({ activeBG }) =>
     activeBG &&
@@ -205,19 +204,19 @@ export default function Claim() {
                 {parsedAddress && hasAvailableClaim && (
                   <>
                     <RowBetween>
-                      <TYPE.white fontWeight={500}>
+                      <TYPE.mediumHeader fontWeight={500} fontSize={16}>
                         <Trans>
                           You have {amountV1?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MISHKA v1 Tokens.
                           {additionalPercent > 0 ? `With a ${additionalPercent}% Claim Bonus, you` : 'You'} will receive
                           this many MISHKA v2 tokens:
                         </Trans>
-                      </TYPE.white>
+                      </TYPE.mediumHeader>
                     </RowBetween>
                   </>
                 )}
-                <TYPE.white fontWeight={700} fontSize={36}>
+                <TYPE.subHeader fontWeight={700} fontSize={36}>
                   <Trans>{amountV2?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MISHKA</Trans>
-                </TYPE.white>
+                </TYPE.subHeader>
               </CardSection>
               <Break />
             </ModalUpper>

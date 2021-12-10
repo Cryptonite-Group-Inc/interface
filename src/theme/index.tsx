@@ -76,6 +76,7 @@ function colors(darkMode: boolean): Colors {
 
     // backgrounds / gradient
     bgGradient: darkMode ? '#24243E, #302B63, #0F0C29' : '#A1DBFF, #CBEBFF, #F0F9FF',
+    bgGradient1: darkMode ? '#ff007a 0%, #021d43 100%' : '#ff007a 0%, #2172e5 100%',
 
     //specialty colors
     modalBG: darkMode ? 'rgba(0,0,0,.425)' : 'rgba(0,0,0,0.3)',
