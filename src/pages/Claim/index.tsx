@@ -197,7 +197,7 @@ export default function Claim() {
               <CardSection gap="md">
                 <RowBetween>
                   <TYPE.largeHeader color="white">
-                    <Trans>Claim MISHKA Token</Trans>
+                    <Trans>Claim Mishka Token v2 ($MSK)</Trans>
                   </TYPE.largeHeader>
                 </RowBetween>
                 {parsedAddress && hasAvailableClaim && (
@@ -205,16 +205,16 @@ export default function Claim() {
                     <RowBetween>
                       <TYPE.white fontSize={16}>
                         <Trans>
-                          You have {balanceV1?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MISHKA v1 Tokens.
-                          {additionalPercent > 0 ? `With a ${additionalPercent}% Claim Bonus, you` : 'You'} will receive
-                          this many MISHKA v2 tokens:
+                          You have {balanceV1?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} Mishka Token v1
+                          ($MISHKA). {additionalPercent > 0 ? `With a ${additionalPercent}% Claim Bonus, you ` : 'You '}
+                          will receive this many Mishka Token v2 ($MSK):
                         </Trans>
                       </TYPE.white>
                     </RowBetween>
                   </>
                 )}
                 <TYPE.white fontWeight={700} fontSize={36}>
-                  <Trans>{receiveAmountV2?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MISHKA</Trans>
+                  <Trans>{receiveAmountV2?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MSK</Trans>
                 </TYPE.white>
               </CardSection>
               <Break />
@@ -234,9 +234,7 @@ export default function Claim() {
                   mt="1rem"
                   onClick={handleApprove}
                 >
-                  <Trans>
-                    {approvalState === ApprovalState.APPROVED ? 'You can now claim MISHKA' : 'Approve MISHKA V1'}
-                  </Trans>
+                  <Trans>{approvalState === ApprovalState.APPROVED ? 'You can now claim MSK' : 'Approve MISHKA'}</Trans>
                   {approvalState === ApprovalState.PENDING ? (
                     <Loader stroke="white" style={{ position: 'absolute', right: '20px' }} />
                   ) : approvalSubmitted && approvalState === ApprovalState.APPROVED ? (
@@ -267,7 +265,7 @@ export default function Claim() {
                 mt="1rem"
                 onClick={handleClaim}
               >
-                <Trans>Claim MISHKA V2</Trans>
+                <Trans>Claim MSK</Trans>
               </ButtonPrimary>
             </AutoColumn>
           </ContentWrapper>
@@ -283,18 +281,18 @@ export default function Claim() {
                   <TYPE.largeHeader fontSize={16} color="black">
                     <Trans>Congratulations! You received:</Trans>
                   </TYPE.largeHeader>
-                  <UniTokenAnimated width="72px" src={TokenLogo} alt="MISHKA logo" />
+                  <UniTokenAnimated width="72px" src={TokenLogo} alt="Mishka logo" />
                 </>
               )}
             </ConfirmedIcon>
             <AutoColumn gap="20px" justify={'center'}>
               <AutoColumn gap="12px" justify={'center'}>
                 <TYPE.largeHeader color="black">
-                  {claimConfirmed ? <Trans>{claimedAmount || 0} MISHKA</Trans> : <Trans>Claiming</Trans>}
+                  {claimConfirmed ? <Trans>{claimedAmount || 0} MSK</Trans> : <Trans>Claiming</Trans>}
                 </TYPE.largeHeader>
                 {!claimConfirmed && (
                   <Text fontSize={36} color={'#ff007a'} fontWeight={800}>
-                    <Trans>{receiveAmountV2?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MISHKA</Trans>
+                    <Trans>{receiveAmountV2?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MSK</Trans>
                   </Text>
                 )}
                 {parsedAddress && (
@@ -309,12 +307,12 @@ export default function Claim() {
                     {!success ? (
                       <RowFixed>
                         <Trans>
-                          Add MISHKA to <StyledLogo src={MetaMaskLogo} /> MetaMask
+                          Add MSK to <StyledLogo src={MetaMaskLogo} /> MetaMask
                         </Trans>
                       </RowFixed>
                     ) : (
                       <RowFixed>
-                        <Trans>Added MISHKA</Trans>
+                        <Trans>Added MSK</Trans>
                         <CheckCircle size={'16px'} stroke={theme.green1} style={{ marginLeft: '6px' }} />
                       </RowFixed>
                     )}
@@ -345,8 +343,9 @@ export default function Claim() {
         <RowBetween>
           <TYPE.italic fontWeight={500} style={{ fontFamily: 'system-ui' }}>
             <Trans>
-              Note: MISHKA V1 has 1 Trillion total supply. MISHKA V2 will be 1 Billion total supply across all chains.
-              For example, if you have 1,000,000 V1 tokens, you will receive 1,000 V2 tokens.
+              Note: Mishka Token ($MISHKA) V1 has 1 Trillion total supply. Mishka Token V2 ($MSK) will be 1 Billion
+              total supply across all chains. For example, if you have 1,000,000 V1 MISHKA tokens, you will receive
+              1,000 MSK V2 tokens.
             </Trans>
           </TYPE.italic>
         </RowBetween>
