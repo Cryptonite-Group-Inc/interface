@@ -81,32 +81,6 @@
         "type": "address"
       }
     ],
-    "name": "addBlackList",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address[]",
-        "name": "_addresses",
-        "type": "address[]"
-      }
-    ],
-    "name": "addBlackListMultiple",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_address",
-        "type": "address"
-      }
-    ],
     "name": "addIgnoreFeeAddress",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -115,32 +89,6 @@
   {
     "inputs": [],
     "name": "addLiquidity",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_address",
-        "type": "address"
-      }
-    ],
-    "name": "addWhiteList",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address[]",
-        "name": "_addresses",
-        "type": "address[]"
-      }
-    ],
-    "name": "addWhiteListMultiple",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -258,7 +206,20 @@
   },
   {
     "inputs": [],
-    "name": "getBuyFee",
+    "name": "getBuyBonusPercent",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getBuyFeePercent",
     "outputs": [
       {
         "internalType": "uint256",
@@ -297,19 +258,6 @@
   },
   {
     "inputs": [],
-    "name": "getCoolDownSeconds",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "getFeeWallet",
     "outputs": [
       {
@@ -323,7 +271,7 @@
   },
   {
     "inputs": [],
-    "name": "getMaxWalletSize",
+    "name": "getMaxWalletSizeToken",
     "outputs": [
       {
         "internalType": "uint256",
@@ -336,7 +284,7 @@
   },
   {
     "inputs": [],
-    "name": "getNumOfTokensForDisprese",
+    "name": "getNumOfTokensForDisperse",
     "outputs": [
       {
         "internalType": "uint256",
@@ -349,7 +297,7 @@
   },
   {
     "inputs": [],
-    "name": "getSellFee",
+    "name": "getSellFeePercent",
     "outputs": [
       {
         "internalType": "uint256",
@@ -362,7 +310,7 @@
   },
   {
     "inputs": [],
-    "name": "getTxLimit",
+    "name": "getTxLimitToken",
     "outputs": [
       {
         "internalType": "uint256",
@@ -437,7 +385,7 @@
   },
   {
     "inputs": [],
-    "name": "isPublicTradingOpen",
+    "name": "isPublicTradingOpened",
     "outputs": [
       {
         "internalType": "bool",
@@ -542,12 +490,51 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "_address",
+        "type": "address"
+      }
+    ],
+    "name": "setBlackList",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address[]",
+        "name": "_addresses",
+        "type": "address[]"
+      }
+    ],
+    "name": "setBlackListMultiple",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint256",
-        "name": "_buyFee",
+        "name": "_buyBonusPercent",
         "type": "uint256"
       }
     ],
-    "name": "setBuyFee",
+    "name": "setBuyBonusPercent",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_buyFeePercent",
+        "type": "uint256"
+      }
+    ],
+    "name": "setBuyFeePercent",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -594,19 +581,6 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "_coolDownSeconds",
-        "type": "uint256"
-      }
-    ],
-    "name": "setCoolDownSeconds",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "address payable",
         "name": "_feeWallet",
         "type": "address"
@@ -625,7 +599,7 @@
         "type": "uint256"
       }
     ],
-    "name": "setMaxWalletSize",
+    "name": "setMaxWalletSizeToken",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -634,7 +608,7 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_numOfTokensForDisprese",
+        "name": "_numOfTokensForDisperse",
         "type": "uint256"
       }
     ],
@@ -660,11 +634,11 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_sellFee",
+        "name": "_sellFeePercent",
         "type": "uint256"
       }
     ],
-    "name": "setSellFee",
+    "name": "setSellFeePercent",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -677,7 +651,33 @@
         "type": "uint256"
       }
     ],
-    "name": "setTxLimit",
+    "name": "setTxLimitToken",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_address",
+        "type": "address"
+      }
+    ],
+    "name": "setWhiteList",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address[]",
+        "name": "_addresses",
+        "type": "address[]"
+      }
+    ],
+    "name": "setWhiteListMultiple",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -765,7 +765,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "newOwner",
+        "name": "_newOwner",
         "type": "address"
       }
     ],
