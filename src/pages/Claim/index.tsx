@@ -42,7 +42,7 @@ const ContentWrapper = styled(AutoColumn)`
 const ExtraWrapper = styled.div<{ maxWidth?: string }>`
   max-width: ${({ maxWidth }) => maxWidth ?? '480px'};
   width: 100%;
-  padding: 16px 27px;
+  padding: 16px 20px;
   margin-top: 0;
   margin-left: auto;
   margin-right: auto;
