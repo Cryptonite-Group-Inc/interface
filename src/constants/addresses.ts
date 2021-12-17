@@ -11,7 +11,7 @@ export const MISHKA_V1_ADDRESS: AddressMap = {
   [SupportedChainId.ROPSTEN]: '0x9bca68f45fef973a3c5bd0ce3c270783f81d9d49',
 }
 export const MISHKA_V2_ADDRESS: AddressMap = {
-  [SupportedChainId.MAINNET]: '0xcdeaa6c0f80a06e6d57779bf78041902cee6d2b5',
+  [SupportedChainId.MAINNET]: '0x72D7b17bF63322A943d4A2873310a83DcdBc3c8D',
   [SupportedChainId.ROPSTEN]: '0xC2A50714073f473007e9052CdFcf0Cb25cd157E6',
 }
 
