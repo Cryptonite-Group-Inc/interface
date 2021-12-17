@@ -1,6 +1,6 @@
 import { Ether, Token, WETH9 } from '@uniswap/sdk-core'
 
-import { MISHKA_ADDRESS, MISHKA2_ADDRESS, UNI_ADDRESS } from './addresses'
+import { MISHKA_V1_ADDRESS, MISHKA_V2_ADDRESS, UNI_ADDRESS } from './addresses'
 import { SupportedChainId } from './chains'
 
 export const AMPL = new Token(
@@ -137,12 +137,12 @@ export const ETH2X_FLI = new Token(
   'ETH 2x Flexible Leverage Index'
 )
 export const MISHKA: { [chainId: number]: Token } = {
-  [SupportedChainId.MAINNET]: new Token(SupportedChainId.MAINNET, MISHKA_ADDRESS[1], 9, 'MISHKA', 'Mishka v1'),
-  [SupportedChainId.ROPSTEN]: new Token(SupportedChainId.ROPSTEN, MISHKA_ADDRESS[3], 9, 'MISHKA', 'Mishka v1'),
+  [SupportedChainId.MAINNET]: new Token(SupportedChainId.MAINNET, MISHKA_V1_ADDRESS[1], 9, 'MISHKA', 'Mishka v1'),
+  [SupportedChainId.ROPSTEN]: new Token(SupportedChainId.ROPSTEN, MISHKA_V1_ADDRESS[3], 9, 'MISHKA', 'Mishka v1'),
 }
 export const MISHKA2: { [chainId: number]: Token } = {
-  [SupportedChainId.MAINNET]: new Token(SupportedChainId.MAINNET, MISHKA2_ADDRESS[1], 18, 'MISHKA', 'Mishka v2'),
-  [SupportedChainId.ROPSTEN]: new Token(SupportedChainId.ROPSTEN, MISHKA2_ADDRESS[3], 18, 'MISHKA', 'Mishka v2'),
+  [SupportedChainId.MAINNET]: new Token(SupportedChainId.MAINNET, MISHKA_V2_ADDRESS[1], 18, 'MSK', 'Mishka v2'),
+  [SupportedChainId.ROPSTEN]: new Token(SupportedChainId.ROPSTEN, MISHKA_V2_ADDRESS[3], 18, 'MSK', 'Mishka v2'),
 }
 
 export const UNI: { [chainId: number]: Token } = {

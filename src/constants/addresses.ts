@@ -6,8 +6,14 @@ import { SupportedChainId } from './chains'
 
 type AddressMap = { [chainId: number]: string }
 
-export const MISHKA_ADDRESS: AddressMap = constructSameAddressMap('0x9bca68f45fef973a3c5bd0ce3c270783f81d9d49')
-export const MISHKA2_ADDRESS: AddressMap = constructSameAddressMap('0xC2A50714073f473007e9052CdFcf0Cb25cd157E6')
+export const MISHKA_V1_ADDRESS: AddressMap = {
+  [SupportedChainId.MAINNET]: '0x976091738973b520a514ea206acdd008a09649de',
+  [SupportedChainId.ROPSTEN]: '0x9bca68f45fef973a3c5bd0ce3c270783f81d9d49',
+}
+export const MISHKA_V2_ADDRESS: AddressMap = {
+  [SupportedChainId.MAINNET]: '0xcdeaa6c0f80a06e6d57779bf78041902cee6d2b5',
+  [SupportedChainId.ROPSTEN]: '0xC2A50714073f473007e9052CdFcf0Cb25cd157E6',
+}
 
 export const UNI_ADDRESS: AddressMap = constructSameAddressMap('0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984')
 export const MULTICALL_ADDRESS: AddressMap = {
