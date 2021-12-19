@@ -87,8 +87,7 @@ export default function Claim() {
   const receiveAmountV2: CurrencyAmount<Currency> | undefined = claimRate
     ? balanceV1?.divide(1e6).multiply(claimRate.toString())
     : undefined
-  const claimableAmount: CurrencyAmount<Currency> | undefined = balanceV1?.multiply(1e9)
-  const hasAvailableClaim: boolean = Number(claimableAmount?.toFixed(0)) > 0
+  const hasAvailableClaim: boolean | undefined = balanceV1?.greaterThan(0)
   const [claimedAmount, setClaimedAmount] = useState<string>('')
 
   // used for UI loading states
@@ -109,14 +108,14 @@ export default function Claim() {
 
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
-    if (!currentAllowance || !claimableAmount) return ApprovalState.UNKNOWN
+    if (!currentAllowance || !balanceV1) return ApprovalState.UNKNOWN
 
-    return currentAllowance.lessThan(claimableAmount)
+    return currentAllowance.lessThan(balanceV1)
       ? pendingApproval
         ? ApprovalState.PENDING
         : ApprovalState.NOT_APPROVED
       : ApprovalState.APPROVED
-  }, [currentAllowance, pendingApproval, claimableAmount])
+  }, [currentAllowance, pendingApproval, balanceV1])
 
   const showApproveFlow =
     approvalState === ApprovalState.NOT_APPROVED ||
@@ -127,7 +126,7 @@ export default function Claim() {
     if (mishkaContract) {
       setPendingApproval(true)
       await mishkaContract
-        .approve(mishka2Contract?.address, claimableAmount?.quotient.toString())
+        .approve(mishka2Contract?.address, balanceV1?.quotient.toString())
         .then()
         .catch((error: any) => {
           setPendingApproval(false)
