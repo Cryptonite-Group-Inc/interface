@@ -26,7 +26,7 @@ import { AutoColumn } from '../../components/Column'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import CurrencyLogo from '../../components/CurrencyLogo'
 import Loader from '../../components/Loader'
-import Row, { AutoRow, RowFixed } from '../../components/Row'
+import Row, { AutoRow, RowBetween, RowFixed } from '../../components/Row'
 import confirmPriceImpactWithoutFee from '../../components/swap/confirmPriceImpactWithoutFee'
 import ConfirmSwapModal from '../../components/swap/ConfirmSwapModal'
 import {
@@ -74,6 +74,15 @@ const StyledInfo = styled(Info)`
   :hover {
     color: ${({ theme }) => theme.text1};
   }
+`
+
+const ExtraWrapper = styled.div<{ maxWidth?: string }>`
+  max-width: ${({ maxWidth }) => maxWidth ?? '480px'};
+  width: 100%;
+  padding: 16px 20px;
+  margin-top: 0;
+  margin-left: auto;
+  margin-right: auto;
 `
 
 export default function Swap({ history }: RouteComponentProps) {
@@ -658,6 +667,13 @@ export default function Swap({ history }: RouteComponentProps) {
           </AutoColumn>
         </Wrapper>
       </AppBody>
+      <ExtraWrapper>
+        <RowBetween>
+          <TYPE.italic fontWeight={500} style={{ fontFamily: 'system-ui' }}>
+            <Trans>Mishka v1 Trading has been paused to prepare for our Mishka v2 launch.</Trans>
+          </TYPE.italic>
+        </RowBetween>
+      </ExtraWrapper>
       <SwitchLocaleLink />
       {!swapIsUnsupported ? null : (
         <UnsupportedCurrencyFooter
