@@ -31,7 +31,6 @@ export default function Identicon() {
       const current = ref.current
       current?.appendChild(icon)
     }
-    return
   }, [account, avatar, fetchable])
 
   return (

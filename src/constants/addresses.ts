@@ -12,7 +12,7 @@ export const MISHKA_V1_ADDRESS: AddressMap = {
 }
 export const MISHKA_V2_ADDRESS: AddressMap = {
   [SupportedChainId.MAINNET]: '0x72D7b17bF63322A943d4A2873310a83DcdBc3c8D',
-  [SupportedChainId.ROPSTEN]: '0xC2A50714073f473007e9052CdFcf0Cb25cd157E6',
+  [SupportedChainId.ROPSTEN]: '0x7e6ed90685cd5Eb249D7Dcab86814107E3aec836',
 }
 
 export const UNI_ADDRESS: AddressMap = constructSameAddressMap('0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984')
