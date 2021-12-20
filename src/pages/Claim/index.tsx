@@ -23,7 +23,6 @@ import { MISHKA, MISHKA2 } from '../../constants/tokens'
 import useAddTokenToMetamask from '../../hooks/useAddTokenToMetamask'
 import { ApprovalState } from '../../hooks/useApproveCallback'
 import { useMishka2Contract, useMishkaContract } from '../../hooks/useContract'
-import useENS from '../../hooks/useENS'
 import { useGetClaimRate } from '../../hooks/useGetClaimRate'
 import { useTokenAllowance } from '../../hooks/useTokenAllowance'
 import { useActiveWeb3React } from '../../hooks/web3'
@@ -76,14 +75,13 @@ const StyledLogo = styled.img`
 export default function Claim() {
   const theme = useContext(ThemeContext)
   const { account, chainId, library } = useActiveWeb3React()
-  const { address: parsedAddress } = useENS(account)
 
   const claimRate = useGetClaimRate()
   const additionalPercent = (claimRate - 1000) / 10
 
   const mishka: Token | undefined = chainId ? MISHKA[chainId] : undefined
   const mishka2: Token | undefined = chainId ? MISHKA2[chainId] : undefined
-  const balanceV1: CurrencyAmount<Currency> | undefined = useCurrencyBalance(parsedAddress ?? undefined, mishka)
+  const balanceV1: CurrencyAmount<Currency> | undefined = useCurrencyBalance(account ?? undefined, mishka)
   const receiveAmountV2: CurrencyAmount<Currency> | undefined = claimRate
     ? balanceV1?.divide(1e6).multiply(claimRate.toString())
     : undefined
@@ -103,7 +101,7 @@ export default function Claim() {
   const mishkaContract = useMishkaContract()
   const mishka2Contract = useMishka2Contract()
   const spender: string | undefined = mishka2Contract?.address
-  const currentAllowance = useTokenAllowance(mishka, parsedAddress ?? undefined, spender)
+  const currentAllowance = useTokenAllowance(mishka, account ?? undefined, spender)
   const { addToken, success } = useAddTokenToMetamask(mishka2)
 
   // check the current approval status
@@ -199,7 +197,7 @@ export default function Claim() {
                     <Trans>Claim Mishka Token v2 ($MSK)</Trans>
                   </TYPE.largeHeader>
                 </RowBetween>
-                {parsedAddress && hasAvailableClaim && (
+                {account && hasAvailableClaim && (
                   <>
                     <RowBetween>
                       <TYPE.white fontSize={16}>
@@ -219,7 +217,7 @@ export default function Claim() {
               <Break />
             </ModalUpper>
             <AutoColumn gap="md" style={{ padding: '1rem', paddingTop: '0' }} justify="center">
-              {parsedAddress && !hasAvailableClaim && (
+              {account && !hasAvailableClaim && (
                 <TYPE.error error={true}>
                   <Trans>Account has no available claim</Trans>
                 </TYPE.error>
@@ -255,9 +253,7 @@ export default function Claim() {
                 </ButtonPrimary>
               )}
               <ButtonPrimary
-                disabled={
-                  !isAddress(parsedAddress ?? '') || !hasAvailableClaim || approvalState !== ApprovalState.APPROVED
-                }
+                disabled={!isAddress(account ?? '') || !hasAvailableClaim || approvalState !== ApprovalState.APPROVED}
                 padding="16px 16px"
                 width="100%"
                 $borderRadius="12px"
@@ -294,9 +290,9 @@ export default function Claim() {
                     <Trans>{receiveAmountV2?.toFixed(0, { groupSeparator: ',' } ?? '-') || 0} MSK</Trans>
                   </Text>
                 )}
-                {parsedAddress && (
+                {account && (
                   <TYPE.subHeader color="black">
-                    <Trans>To address {shortenAddress(parsedAddress)}</Trans>
+                    <Trans>To address {shortenAddress(account)}</Trans>
                   </TYPE.subHeader>
                 )}
               </AutoColumn>
