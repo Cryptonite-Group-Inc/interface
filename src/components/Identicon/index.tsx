@@ -30,9 +30,6 @@ export default function Identicon() {
       const icon = jazzicon(16, parseInt(account?.slice(2, 10), 16))
       const current = ref.current
       current?.appendChild(icon)
-      return () => {
-        current?.removeChild(icon)
-      }
     }
     return
   }, [account, avatar, fetchable])
