@@ -1,6 +1,6 @@
 import { isAddress } from '@ethersproject/address'
 import { Trans } from '@lingui/macro'
-import { Currency, CurrencyAmount, Token } from '@uniswap/sdk-core'
+import { CurrencyAmount, Token } from '@uniswap/sdk-core'
 import { MouseoverTooltip } from 'components/Tooltip'
 import { useContext, useEffect, useMemo, useState } from 'react'
 import { CheckCircle, HelpCircle } from 'react-feather'
@@ -28,7 +28,7 @@ import { useTokenAllowance } from '../../hooks/useTokenAllowance'
 import { useActiveWeb3React } from '../../hooks/web3'
 import { TransactionType } from '../../state/transactions/actions'
 import { useIsTransactionPending, useTransactionAdder } from '../../state/transactions/hooks'
-import { useCurrencyBalance } from '../../state/wallet/hooks'
+import { useTokenBalance } from '../../state/wallet/hooks'
 import { CustomLightSpinner, ExternalLink, TYPE, UniTokenAnimated } from '../../theme'
 import { shortenAddress } from '../../utils'
 import { ExplorerDataType, getExplorerLink } from '../../utils/getExplorerLink'
@@ -81,8 +81,8 @@ export default function Claim() {
 
   const mishka: Token | undefined = chainId ? MISHKA[chainId] : undefined
   const mishka2: Token | undefined = chainId ? MISHKA2[chainId] : undefined
-  const balanceV1: CurrencyAmount<Currency> | undefined = useCurrencyBalance(account ?? undefined, mishka)
-  const receiveAmountV2: CurrencyAmount<Currency> | undefined = claimRate
+  const balanceV1: CurrencyAmount<Token> | undefined = useTokenBalance(account ?? undefined, mishka)
+  const receiveAmountV2: CurrencyAmount<Token> | undefined = claimRate
     ? balanceV1?.divide(1e6).multiply(claimRate.toString())
     : undefined
   const hasAvailableClaim: boolean | undefined = balanceV1?.greaterThan(0)
