@@ -8,11 +8,11 @@ type AddressMap = { [chainId: number]: string }
 
 export const MISHKA_V1_ADDRESS: AddressMap = {
   [SupportedChainId.MAINNET]: '0x976091738973b520a514ea206acdd008a09649de',
-  [SupportedChainId.ROPSTEN]: '0x9bca68f45fef973a3c5bd0ce3c270783f81d9d49',
+  [SupportedChainId.ROPSTEN]: '0x3Fd0737EBa8EEaacC1F92D4a51802Bc1B96141fb',
 }
 export const MISHKA_V2_ADDRESS: AddressMap = {
   [SupportedChainId.MAINNET]: '0x72D7b17bF63322A943d4A2873310a83DcdBc3c8D',
-  [SupportedChainId.ROPSTEN]: '0x7e6ed90685cd5Eb249D7Dcab86814107E3aec836',
+  [SupportedChainId.ROPSTEN]: '0xBfCa5d13B03FdC2AF8a2A6459fEF7A19a32CB178',
 }
 
 export const UNI_ADDRESS: AddressMap = constructSameAddressMap('0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984')
